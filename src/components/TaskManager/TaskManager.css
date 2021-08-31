@@ -1,5 +1,12 @@
 .task-manager
 {
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 800px;
+
+  width: 100%;
+  max-width: 800px;
+
   margin-left: auto;
   margin-right: auto;
 }
