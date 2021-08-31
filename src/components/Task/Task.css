@@ -1,0 +1,35 @@
+.task
+{
+  padding: 5px;  
+  margin-bottom: 1.25rem;
+  margin-top: 1.25rem;
+
+  width: auto;
+  max-width: 800px;
+}
+
+.task .task-description,
+.task .task-deadline,
+.task .task-tags
+{
+  display: inline-block;
+}
+
+.task .task-description
+{
+  margin-right: 10px;
+}
+
+
+
+.task .task-deadline.overdue
+{
+  color: #ffff;
+  background-color: #ca0000;;
+}
+
+.task .task-deadline.upcoming
+{
+  color: #000;
+  background-color: #ffd350;
+}

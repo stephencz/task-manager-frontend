@@ -1,0 +1,24 @@
+.header
+{
+  background-color: #fff;
+  border-bottom: 1px solid #bdbdbd;
+
+  box-sizing: border-box;
+
+  flex-shrink: 1;
+  flex-grow: 0;
+
+  width: 100%;
+  height: 60px;
+
+  margin-bottom: 1rem;
+}
+
+.header .brand
+{
+  color: #8e8e8e;
+  font-size: 2rem;
+
+  margin-top: 10px;
+  margin-left: 10px;
+}

@@ -1,0 +1,36 @@
+.task .task-date
+{
+  display: inline-block;
+  border-radius: 100px;
+  margin-right: 10px;
+}
+
+.react-datepicker__input-container input
+{
+  color: #000;
+  background-color: #efefef;
+
+  border-radius: 100px;
+  border: none;
+  
+  width: 80px;
+  padding: 5px 10px 5px 10px;
+
+  text-align: center;
+
+  -moz-appearance:none;
+  -webkit-appearance: none;
+}
+
+.react-datepicker__input-container input:hover
+{
+  color: #fff;
+}
+
+
+.react-datepicker__input-container input:focus
+{
+  -moz-appearance:none;
+  -webkit-appearance: none;
+}
+
