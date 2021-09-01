@@ -5,7 +5,7 @@
 }
 
 .task .task-description,
-.task .task-deadline,
+.task .task-date,
 .task .task-tags
 {
   display: inline-block;
@@ -18,13 +18,13 @@
 
 
 
-.task .task-deadline.overdue
+.task .task-date.overdue
 {
   color: #ffff;
   background-color: #ca0000;;
 }
 
-.task .task-deadline.upcoming
+.task .task-date.upcoming
 {
   color: #000;
   background-color: #ffd350;

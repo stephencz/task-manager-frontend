@@ -1,30 +1,22 @@
 import React from 'react';
-import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 import Task from '../Task/Task';
-
 import './TaskList.css';
 
-class TaskList extends React.Component {
+const TaskList = (props) => {
 
-  constructor(props) {
-    super(props);
-  }
+  const tasks = useSelector((state) => state.tasks.value);
 
-  componentDidMount() {
-    axios.get("/getTasks").then(res => {
-      console.log(res.data);
-    });
-  }
-
-  render() {
-    return(
-      <div className="task-list">
-        <Task description={"Implement the thing with the cool stuff"} tags={[{name: 'Programming', bg: "#e8a3cd", fg: "#000"}]} deadline={"August 31, 2021"} />
-        <Task description={"Implement the thing with the cool stuff"} tags={[{name: 'Health', bg: "#4ee676", fg: "#000"}]} deadline={"August 31, 2021"}/>
-      </div>
-    );
-  }
+  return(
+    <div className="task-list">
+      { 
+        tasks.map((task) => {
+          return <Task description={ task.description } date={ task.date } tags={ task.tags } />
+        }) 
+      }
+    </div>
+  );
 
 };
 

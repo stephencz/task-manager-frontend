@@ -9,16 +9,13 @@ class App extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      tasks: [],
-    }
   }
 
   render() {
     return (
       <div className="app-wrapper">
         <Header />
-        <TaskManager tasks={ this.state.tasks }/>
+        <TaskManager />
       </div>
     );
   }

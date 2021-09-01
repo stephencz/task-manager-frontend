@@ -11,7 +11,7 @@ const Task = (props) => {
   return(
     <div className="task">
       <TaskDescription description={ props.description } />
-      <TaskDate deadline={ props.deadline } />
+      <TaskDate date={ props.date } />
       <TaskTags tags={ props.tags } />
     </div>
   );
