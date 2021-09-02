@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { createSlice } from '@reduxjs/toolkit';
 
 export const tasksSlice = createSlice({
@@ -6,18 +7,20 @@ export const tasksSlice = createSlice({
     value: [],
   },
   reducers: {
-    addEmptyTask: (state) => {
-      state.value = [...state.value, {
-        description: 'New task',
-        date: null,
-        tags: [],
-      }]
+    setTasks: state => {
+      state.value = 
     },
   },
 });
 
+export const loadTasks = () => async (dispatch, getState) => {
+  axios.get('/tasks').then(res => {
+    state.value = res.data
+  });
+}
+
 export const { 
-  addEmptyTask,
+  getTasks
 } = tasksSlice.actions;
 
 export default tasksSlice.reducer;

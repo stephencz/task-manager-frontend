@@ -18,7 +18,7 @@ const TaskOperations = (props) => {
         <option value="">Sort by Tag</option>
       </select>
       
-      <button onClick={ () => dispatch(addEmptyTask()) }>
+      <button >
         Add Task
       </button>
       
