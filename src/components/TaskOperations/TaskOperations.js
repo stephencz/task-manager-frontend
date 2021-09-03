@@ -1,11 +1,8 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { addEmptyTask } from '../../features/tasks';
 import './TaskOperations.css'
 
 const TaskOperations = (props) => {
 
-  const dispatch = useDispatch();
 
   return (
     <div className="task-operations">

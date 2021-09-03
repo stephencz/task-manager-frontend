@@ -1,26 +1,44 @@
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { createSlice } from '@reduxjs/toolkit';
+
+
+// This is a thunk
+export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async() => {
+  const response = await axios.get('/tasks').then();
+  return JSON.parse(response.data);
+});
 
 export const tasksSlice = createSlice({
   name: 'tasks',
+  
   initialState: {
-    value: [],
+    tasks: [],
+    status: null
   },
+  
   reducers: {
-    setTasks: state => {
-      state.value = 
-    },
+    updateTasks(state, action) {
+      state.tasks.push(action.payload);
+    }
   },
+
+  extraReducers: builder => {
+    builder
+    .addCase(fetchTasks.pending, (state, action) => {
+      state.status = 'Loading tasks';
+    })
+    .addCase(fetchTasks.fulfilled, (state, action) => {
+      state.tasks = action.payload;
+      state.status = null;
+    })
+    .addCase(fetchTasks.rejected, (state, action) => {
+      state.status = "Failed to load tasks"
+    })
+  }
 });
 
-export const loadTasks = () => async (dispatch, getState) => {
-  axios.get('/tasks').then(res => {
-    state.value = res.data
-  });
-}
-
 export const { 
-  getTasks
+  updateTasks
 } = tasksSlice.actions;
 
 export default tasksSlice.reducer;
