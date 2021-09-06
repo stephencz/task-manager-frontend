@@ -3,9 +3,9 @@ import axios from 'axios';
 
 
 // This is a thunk
-export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async() => {
-  const response = await axios.get('/tasks').then();
-  return JSON.parse(response.data);
+export const getTasks = createAsyncThunk('tasks/getTasks', async (dispath, getState) => {
+  const response = await axios.get('/tasks');
+  return response.data;
 });
 
 export const tasksSlice = createSlice({
@@ -22,18 +22,17 @@ export const tasksSlice = createSlice({
     }
   },
 
-  extraReducers: builder => {
-    builder
-    .addCase(fetchTasks.pending, (state, action) => {
-      state.status = 'Loading tasks';
-    })
-    .addCase(fetchTasks.fulfilled, (state, action) => {
+  extraReducers: {
+    [getTasks.pending]: (state, action) => {
+      state.status = "Loading Tasks";
+    },
+    [getTasks.fulfilled]: (state, action) => {
       state.tasks = action.payload;
       state.status = null;
-    })
-    .addCase(fetchTasks.rejected, (state, action) => {
+    },
+    [getTasks.rejected]: (state, action) => {
       state.status = "Failed to load tasks"
-    })
+    }
   }
 });
 

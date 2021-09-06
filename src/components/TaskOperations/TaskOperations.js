@@ -20,7 +20,11 @@ const TaskOperations = (props) => {
       </button>
       
       <button>
-        Add Tag
+        Edit Tags
+      </button>
+
+      <button>
+        Save
       </button>
     </div>
   )
