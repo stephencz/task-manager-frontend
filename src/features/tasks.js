@@ -1,10 +1,19 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-
-// This is a thunk
-export const getTasks = createAsyncThunk('tasks/getTasks', async (dispath, getState) => {
+/**
+ * Returns a JSON Array containing all tasks.
+ */
+export const getTasks = createAsyncThunk('tasks/getTasks', async (dispatch, getState) => {
   const response = await axios.get('/tasks');
+  return response.data;
+});
+
+/**
+ * Saves the current state of all tasks in the database.
+ */
+export const saveTasks = createAsyncThunk('tasks/saveTasks', async (dispatch, getState) => {
+  const response = null;
   return response.data;
 });
 
@@ -17,6 +26,16 @@ export const tasksSlice = createSlice({
   },
   
   reducers: {
+    setTaskDescription(state, action) {
+      state.tasks = state.tasks.map((task, index) => {
+
+        if(task.task_id !== action.payload.id) {
+          return task;
+        }
+
+        return {...task, task_description: action.payload.description };
+      })
+    },
     updateTasks(state, action) {
       state.tasks.push(action.payload);
     }
@@ -37,6 +56,7 @@ export const tasksSlice = createSlice({
 });
 
 export const { 
+  setTaskDescription,
   updateTasks
 } = tasksSlice.actions;
 

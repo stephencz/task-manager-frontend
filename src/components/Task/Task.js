@@ -25,9 +25,9 @@ const Task = (props) => {
 
   return(
     <div className="task">
-      <TaskDescription description={ props.description } />
-      <TaskTags tags={ props.tags } />
-      <TaskDate date={ props.date } />
+      <TaskDescription id={ props.id } description={ props.description } />
+      <TaskTags id={ props.id } tags={ props.tags } />
+      <TaskDate id={ props.id } date={ props.date } />
     </div>
   );
 
