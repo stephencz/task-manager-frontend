@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setTaskDescription } from '../../features/tasks';
-
 import ContentEditable from 'react-contenteditable'
 import './TaskDescription.css';
 
@@ -17,18 +16,16 @@ const TaskDescription = (props) => {
   // Real DOM references required by react-contenteditable
   const innerRef = useRef(null);
 
+  // Redux dispatch for dispatching actions
   const dispatch = useDispatch();
 
   /**
-   * Called whenever a change is made to the task description.
+   * Used by react-contenteditable to blur the editable container
+   * when the enter key is pressed.
    * @param {*} event 
    */
-  const handleBlur = (event) => { 
-    console.log(event.target)
-    dispatch(setTaskDescription({ id: props.id, description: event.target.textContent }));
-  }
-
   const handleKeyDown = (event) => {
+    // Key Code 13 means ENTER
     if(event.keyCode == 13) {
       event.target.blur();
       event.preventDefault();
@@ -36,11 +33,22 @@ const TaskDescription = (props) => {
   }
 
   /**
-   * Generates the task description
-   * @param {*} props The Components properties
+   * Used by react-contenteditable and called when the editable container
+   * is 'blurred', i.e loses focus. When blured the new contents of the
+   * task description is used to update the Redux store.
+   * @param {*} event 
+   */
+  const handleBlur = (event) => { 
+    dispatch(setTaskDescription({ id: props.id, description: event.target.textContent }));
+  }
+
+  /**
+   * Gets the task description or sets it to the default if the description is
+   * null or empty.
+   * @param {*} props 
    * @returns A String containing the task's description.
    */
-  const getDescriptionHTML = (props) => {
+  const getDescriptionText = (props) => {
     if(props.description === null || props.description == "") {
       dispatch(setTaskDescription({ id: props.id, description: 'This is an empty task.' }))
       return 'This is an empty task.';
@@ -55,7 +63,7 @@ const TaskDescription = (props) => {
     <div className="task-description">
       <ContentEditable
         innerRef={ innerRef }
-        html={ getDescriptionHTML(props) }
+        html={ getDescriptionText(props) }
         disabled={ false }
         onBlur = { handleBlur }
         onKeyDown = { handleKeyDown }

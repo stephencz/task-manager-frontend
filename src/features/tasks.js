@@ -28,7 +28,6 @@ export const tasksSlice = createSlice({
   reducers: {
     setTaskDescription(state, action) {
       state.tasks = state.tasks.map((task, index) => {
-
         if(task.task_id !== action.payload.id) {
           return task;
         }
@@ -36,6 +35,17 @@ export const tasksSlice = createSlice({
         return {...task, task_description: action.payload.description };
       })
     },
+    
+    setTaskDate(state, action) {
+      state.tasks = state.tasks.map((task, index) => {
+        if(task.task_id !== action.payload.id) {
+          return task;
+        }
+
+        return {...task, task_date: action.payload.newDate };
+      });
+    },
+
     updateTasks(state, action) {
       state.tasks.push(action.payload);
     }
@@ -57,6 +67,7 @@ export const tasksSlice = createSlice({
 
 export const { 
   setTaskDescription,
+  setTaskDate,
   updateTasks
 } = tasksSlice.actions;
 
