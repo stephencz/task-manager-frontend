@@ -11,7 +11,7 @@ import './TaskManager.css';
 const TaskManager = (props) => {
   
   return (
-    <div class="task-manager">
+    <div className="task-manager">
       <TaskOperations />
       <TaskList />
     </div>

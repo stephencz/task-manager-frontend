@@ -18,7 +18,7 @@ const TaskList = (props) => {
 
   useEffect(() => {
     dispatch(getTasks());
-  }, [])
+  }, [dispatch])
 
   // Redux State
   const tasks = useSelector((state) => state.tasks.tasks);
@@ -44,8 +44,8 @@ const TaskList = (props) => {
       // Task component.
       if(tasks.length > 0) {
         const elements = tasks.map((task) => {
-
           return <Task 
+            key={ task['task_id'] }
             id={ task['task_id'] }
             description={ task['task_description'] } 
             date={ task['task_date'] } 

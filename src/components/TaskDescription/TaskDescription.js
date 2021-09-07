@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { setTaskDescription } from '../../features/tasks';
 import ContentEditable from 'react-contenteditable'
@@ -26,7 +26,7 @@ const TaskDescription = (props) => {
    */
   const handleKeyDown = (event) => {
     // Key Code 13 means ENTER
-    if(event.keyCode == 13) {
+    if(event.keyCode === 13) {
       event.target.blur();
       event.preventDefault();
     }
@@ -49,7 +49,7 @@ const TaskDescription = (props) => {
    * @returns A String containing the task's description.
    */
   const getDescriptionText = (props) => {
-    if(props.description === null || props.description == "") {
+    if(props.description === null || props.description === "") {
       dispatch(setTaskDescription({ id: props.id, description: 'This is an empty task.' }))
       return 'This is an empty task.';
 

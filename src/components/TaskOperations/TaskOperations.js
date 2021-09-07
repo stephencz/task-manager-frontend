@@ -18,9 +18,17 @@ const TaskOperations = (props) => {
       <button >
         Add Task
       </button>
+
+      <button >
+        Remove Task
+      </button>
       
       <button>
         Edit Tags
+      </button>
+
+      <button>
+        Toggle Date
       </button>
 
       <button>

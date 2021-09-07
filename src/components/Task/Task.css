@@ -1,7 +1,12 @@
 .task
 {
-  margin-bottom: 1.25rem;
-  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+.task.selected
+{
+  background-color: #efefef;
 }
 
 .task .task-description,
