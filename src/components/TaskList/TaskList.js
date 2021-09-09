@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getTasks } from '../../features/tasks';
+import { getAllTasks } from '../../features/tasks';
 
 import Task from '../Task/Task';
 import './TaskList.css';
@@ -17,7 +17,7 @@ const TaskList = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getTasks());
+    dispatch(getAllTasks());
   }, [dispatch])
 
   // Redux State

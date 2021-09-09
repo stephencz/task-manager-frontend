@@ -1,8 +1,15 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { 
+  createNewEmptyTask, 
+  deleteSelectedTasks,
+ } from '../../features/tasks';
+
 import './TaskOperations.css'
 
 const TaskOperations = (props) => {
 
+  const dispatch = useDispatch();
 
   return (
     <div className="task-operations">
@@ -15,11 +22,11 @@ const TaskOperations = (props) => {
         <option value="">Sort by Tag</option>
       </select>
       
-      <button >
-        Add Task
+      <button onClick={ () => dispatch(createNewEmptyTask()) }>
+        New Task
       </button>
 
-      <button >
+      <button onClick={ () => dispatch(deleteSelectedTasks()) }>
         Remove Task
       </button>
       

@@ -4,30 +4,42 @@ import axios from 'axios';
 /**
  * Returns a JSON Array containing all tasks.
  */
-export const getTasks = 
-  createAsyncThunk('tasks/getTasks', async (dispatch, getState) => {
-    const response = await axios.get('/tasks');
+export const getAllTasks = 
+  createAsyncThunk('tasks/getAllTasks', async (dispatch, thunkAPI) => {
+    const response = await axios.get('/tasks/get/all');
     return response.data;
   });
 
-export const createNewTask = 
-  createAsyncThunk('tasks/createNewTask', async (dispatch, getState) => {
-    const response = await axios.post()
+export const saveAllTasks =
+  createAsyncThunk('tasks/saveAllTasks', async (dispatch, thunkAPI) => {
+
   });
 
-/**
- * Saves the current state of all tasks in the database.
- */
-export const saveTasks = createAsyncThunk('tasks/saveTasks', async (dispatch, getState) => {
-  const response = null;
-  return response.data;
-});
+export const createNewEmptyTask = 
+  createAsyncThunk('tasks/createNewEmptyTask', async (dispatch, thunkAPI) => {    
+    const post = await axios.post('/tasks/new/empty');
+    const response = await axios.get('/tasks/get/latest')
+    return response.data[0];
+  });
+
+export const deleteSelectedTasks =
+  createAsyncThunk('tasks/deleteSelectedTasks', async (dispatch, thunkAPI) => {
+    const state = thunkAPI.getState();
+    if(state.tasks.selected.length > 0) {
+      const res = await axios.delete('/tasks/delete/:selected', {
+        params: {
+          selected: state.tasks.selected
+        }
+      });
+
+      return res;
+    }
+  });
 
 export const tasksSlice = createSlice({
   name: 'tasks',
   
   initialState: {
-    newestTask: null,       // Holds the newest task.
     tasks: [],              // An Array of Task Objects
     tags: [],               // An Array of Tag Objects
     selected: [],           // An Array of task ids representing tasks that have been selected.
@@ -35,6 +47,7 @@ export const tasksSlice = createSlice({
   },
   
   reducers: {
+
 
     /**
      * Sets the description of a Task with the matching id. 
@@ -147,16 +160,32 @@ export const tasksSlice = createSlice({
   },
 
   extraReducers: {
-    [getTasks.pending]: (state, action) => {
-      state.status = "Loading Tasks";
+    [getAllTasks.pending]: (state, action) => {
+      state.status = "Loading Tasks!";
     },
-    [getTasks.fulfilled]: (state, action) => {
+    [getAllTasks.fulfilled]: (state, action) => {
       state.tasks = action.payload;
       state.status = null;
     },
-    [getTasks.rejected]: (state, action) => {
-      state.status = "Failed to load tasks"
-    }
+    [getAllTasks.rejected]: (state, action) => {
+      state.status = "Failed to load tasks."
+    },
+
+    [createNewEmptyTask.pending]: (state, action) => { },
+    [createNewEmptyTask.fulfilled]: (state, action) => {
+      state.tasks = [action.payload, ...state.tasks];
+    },
+    [createNewEmptyTask.rejected]: (state, action) => { },
+
+    [deleteSelectedTasks.pending]: (state, action) => {},
+    [deleteSelectedTasks.fulfilled]: (state, action) => {
+
+      
+      state.tasks = state.tasks.filter( value => state.selected.includes(value["task_id"]) !== true)
+
+      state.selected = []
+    },
+    [deleteSelectedTasks.rejected]: (state, action) => {},
   }
 });
 

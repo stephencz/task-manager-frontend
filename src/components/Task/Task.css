@@ -2,11 +2,18 @@
 {
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none;
 }
 
 .task.selected
 {
-  background-color: #efefef;
+  background-color: #c8c9ff;
 }
 
 .task .task-description,
