@@ -11,10 +11,15 @@ import './TaskManager.css';
 const TaskManager = (props) => {
   
   return (
-    <div className="task-manager">
-      <TaskOperations />
-      <TaskList />
+    <div className="row">
+      <div className="col-xl-10 mx-auto">
+        <div className="task-manager">
+          <TaskOperations />
+          <TaskList />
+        </div>
+      </div>
     </div>
+
   );
   
 }

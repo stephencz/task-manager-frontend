@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { setSelected, addSelected, removeSelected, clearSelected } from '../../features/tasks';
+import { useSelector } from 'react-redux';
 
+import TaskHandle from '../TaskHandle/TaskHandle';
 import TaskDescription from '../TaskDescription/TaskDescription';
-import TaskDate from '../TaskDate/TaskDate';
 import TaskTags from '../TaskTags/TaskTags';
+import TaskDate from '../TaskDate/TaskDate';
 
 import './Task.css';
 
@@ -26,35 +26,7 @@ import './Task.css';
  */
 const Task = (props) => {
 
-  const dispatch = useDispatch();
-
   const selected = useSelector(state => state.tasks.selected);
-
-  /**
-   * Handles the selection of tasks.
-   * @param {*} event onClick event Object
-   */
-  const handleTaskSelection = (event) => {
-
-    if(!selected.includes(props.id)) {
-      if(event.shiftKey) {
-        dispatch(addSelected({ id: props.id }));
-
-      } else {
-        dispatch(setSelected({ id: props.id }));
-
-      }
-    } else {
-      if(!event.shiftKey && selected.length > 1) {
-        dispatch(clearSelected());
-
-      } else {
-        dispatch(removeSelected({ id: props.id }));
-
-      }
-    }
-
-  }
 
   /**
    * Determines the correct class name for the Task.
@@ -69,11 +41,10 @@ const Task = (props) => {
     return 'task';
   }
 
+
   return(
-    <div 
-      className={ getTaskClassName() }  
-      onClick={ handleTaskSelection }
-    >
+    <div className={ getTaskClassName() }>
+      <TaskHandle id={ props.id }/>
       <TaskDescription id={ props.id } description={ props.description } />
       <TaskTags id={ props.id } tags={ props.tags } />
       <TaskDate id={ props.id } date={ props.date } />

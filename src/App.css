@@ -1,6 +1,6 @@
 .app-wrapper
 {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
   justify-content: flex-start;
@@ -11,5 +11,5 @@
   height: 100vw;
 
   padding-left: 20px;
-  padding-right: 20px;
+  padding-right: 20px; */
 }

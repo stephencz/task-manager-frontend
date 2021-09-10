@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { setTaskDescription } from '../../features/tasks';
+import { setTaskDescription, addUnsaved, saveTasks } from '../../features/tasks';
 import ContentEditable from 'react-contenteditable'
 import './TaskDescription.css';
 
@@ -40,6 +40,8 @@ const TaskDescription = (props) => {
    */
   const handleBlur = (event) => { 
     dispatch(setTaskDescription({ id: props.id, description: event.target.textContent }));
+    dispatch(addUnsaved({ id: props.id }));
+    dispatch(saveTasks());
   }
 
   /**

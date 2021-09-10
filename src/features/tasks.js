@@ -1,38 +1,47 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-/**
- * Returns a JSON Array containing all tasks.
- */
+/** Returns a JSON Array of all Tasks. */
 export const getAllTasks = 
   createAsyncThunk('tasks/getAllTasks', async (dispatch, thunkAPI) => {
     const response = await axios.get('/tasks/get/all');
     return response.data;
   });
 
-export const saveAllTasks =
-  createAsyncThunk('tasks/saveAllTasks', async (dispatch, thunkAPI) => {
-
-  });
-
+/** Creates a new empty task and adds it to the database. */
 export const createNewEmptyTask = 
   createAsyncThunk('tasks/createNewEmptyTask', async (dispatch, thunkAPI) => {    
-    const post = await axios.post('/tasks/new/empty');
+    await axios.post('/tasks/new/empty');
     const response = await axios.get('/tasks/get/latest')
     return response.data[0];
   });
 
+export const saveTasks = 
+  createAsyncThunk('tasks/saveTasks', async (dispatch, thunkAPI) => {
+
+    const tasks = thunkAPI.getState().tasks.tasks;
+    const unsaved_ids = thunkAPI.getState().tasks.unsaved;
+    const unsaved_tasks = tasks.filter((element) => { 
+      return unsaved_ids.includes(element.task_id) 
+    });
+
+    const response = await axios.post('/tasks/save', unsaved_tasks);
+    return response;
+  });
+
+/** Deletes all tasks that are currently selected */
 export const deleteSelectedTasks =
   createAsyncThunk('tasks/deleteSelectedTasks', async (dispatch, thunkAPI) => {
     const state = thunkAPI.getState();
     if(state.tasks.selected.length > 0) {
-      const res = await axios.delete('/tasks/delete/:selected', {
+      const response = await axios.delete('/tasks/delete/:selected', {
         params: {
           selected: state.tasks.selected
         }
       });
 
-      return res;
+      console.log(response);
+      return response;
     }
   });
 
@@ -41,8 +50,8 @@ export const tasksSlice = createSlice({
   
   initialState: {
     tasks: [],              // An Array of Task Objects
-    tags: [],               // An Array of Tag Objects
     selected: [],           // An Array of task ids representing tasks that have been selected.
+    unsaved: [],            // An Array of task ids representing tasks that have been changed, but not saved.
     status: null            // The status of task loading.
   },
   
@@ -156,36 +165,75 @@ export const tasksSlice = createSlice({
      */
     clearSelected(state, action) {
       state.selected = [];
+    },
+
+    /**
+     * Add an unsaved task id to the unsaved array.
+     * 
+     * Expected payload: 
+     *
+     * {
+     *    id: The id of the task that is 'unsaved'. 
+     * }
+     * 
+     * @param {*} state 
+     * @param {*} action 
+     */
+    addUnsaved(state, action) {
+      if(!state.unsaved.includes(action.payload.id)) {
+        state.unsaved = [...state.unsaved, action.payload.id];
+      }
+    },
+
+    /**
+     * Clears the unsaved array. No payload expected.
+     * @param {*} state 
+     * @param {*} action 
+     */
+    clearUnsaved(state, action) {
+      state.unsaved = [];
     }
   },
 
   extraReducers: {
+
+    /** When tasks are loading, the stauts changes to reflect that they are loading. */
     [getAllTasks.pending]: (state, action) => {
       state.status = "Loading Tasks!";
     },
+
+    /** 
+     * Sets the tasks to the payload recieved from the backend, and null
+     * the status because it won't be displayed anymore.
+     */
     [getAllTasks.fulfilled]: (state, action) => {
       state.tasks = action.payload;
       state.status = null;
     },
+
+    /** If tasks fail to load, the status changes to reflect the failure. */
     [getAllTasks.rejected]: (state, action) => {
       state.status = "Failed to load tasks."
     },
 
-    [createNewEmptyTask.pending]: (state, action) => { },
+    /** Creates a new empty task and adds it to the task list. */
     [createNewEmptyTask.fulfilled]: (state, action) => {
       state.tasks = [action.payload, ...state.tasks];
     },
-    [createNewEmptyTask.rejected]: (state, action) => { },
 
-    [deleteSelectedTasks.pending]: (state, action) => {},
+    /** Saves all tasks in the unsaved array. */
+    [saveTasks.fulfilled]: (state, action) => {
+      state.unsaved = [];
+    },
+
+    /**
+     * If tasks are successfully removed from database, then they are removed
+     * from our local copy of the task's.
+     */
     [deleteSelectedTasks.fulfilled]: (state, action) => {
-
-      
       state.tasks = state.tasks.filter( value => state.selected.includes(value["task_id"]) !== true)
-
       state.selected = []
     },
-    [deleteSelectedTasks.rejected]: (state, action) => {},
   }
 });
 
@@ -199,7 +247,10 @@ export const {
   setSelected,
   addSelected,
   removeSelected,
-  clearSelected
+  clearSelected,
+
+  addUnsaved,
+  clearUnsaved
 
 } = tasksSlice.actions;
 
