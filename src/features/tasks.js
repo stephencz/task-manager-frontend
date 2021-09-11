@@ -105,7 +105,13 @@ export const tasksSlice = createSlice({
     },
 
     toggleDate(state, action) {
+      state.tasks = state.tasks.map((task, index) => {
+        if(task.task_id !== action.payload.id) {
+          return task;
+        }
 
+        return {...task, task_date_status: action.payload.dateToggle };
+      });
     },
 
     /**

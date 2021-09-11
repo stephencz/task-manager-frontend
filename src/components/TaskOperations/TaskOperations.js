@@ -1,8 +1,11 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { 
   createNewEmptyTask, 
   deleteSelectedTasks,
+  setTaskDate,
+  addUnsaved,
+  saveTasks
  } from '../../features/tasks';
 
 import './TaskOperations.css'
@@ -11,8 +14,36 @@ const TaskOperations = (props) => {
 
   const dispatch = useDispatch();
 
+  const tasks = useSelector((state) => state.tasks.tasks);
+  const selected = useSelector((state) => state.tasks.selected);
+
+  /**
+   * When a task without a date as its calendar icon clicked its
+   * date will be updated to the current date and will be re-rendered
+   * with a react-datepicker component for further selection.
+   * @param {*} event 
+   */
   const handleDateToggle = (event) => {
+    tasks.forEach((task) => {
+      if(selected.includes(task.task_id)) {
+        if(task.task_date !== null) {
+          dispatch(setTaskDate({ 
+            id: task.task_id, 
+            newDate: null
+          }));
+          dispatch(addUnsaved({ id: task.task_id }));
+          dispatch(saveTasks());
     
+        } else {
+          dispatch(setTaskDate({ 
+            id: task.task_id, 
+            newDate: new Date().toISOString()
+          }));
+          dispatch(addUnsaved({ id: task.task_id }));
+          dispatch(saveTasks());
+        }
+      }
+    })
   }
 
   return (
@@ -38,7 +69,7 @@ const TaskOperations = (props) => {
         Edit Tags
       </button>
 
-      <button>
+      <button onClick={ () => handleDateToggle() }>
         Toggle Date
       </button>
 
