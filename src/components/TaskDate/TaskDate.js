@@ -1,6 +1,10 @@
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { setTaskDate } from '../../features/tasks';
+import {
+  setTaskDate,
+  addUnsaved, 
+  saveTasks 
+  } from '../../features/tasks';
 
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -31,10 +35,17 @@ const TaskDate = (props) => {
    * @param {*} date 
    */
   const handleDateChange = (date) => {
+
     dispatch(setTaskDate({ 
       id: props.id, 
       newDate: date.toISOString()
     }));
+    dispatch(addUnsaved({ id: props.id }));
+    dispatch(saveTasks());
+  }
+
+  const handleDateBlur = (event) => {
+    dispatch()
   }
 
   /**
@@ -48,6 +59,8 @@ const TaskDate = (props) => {
       id: props.id, 
       newDate: new Date().toISOString()
     }));
+    dispatch(addUnsaved({ id: props.id }));
+    dispatch(saveTasks());
   }
 
   /**
@@ -67,6 +80,7 @@ const TaskDate = (props) => {
       return <DatePicker 
         selected={ new Date(props.date) }
         onChange={ (date) => handleDateChange(date) }
+        onBlur={ (event) => handleDateBlur(event)}
         />
     }
   }

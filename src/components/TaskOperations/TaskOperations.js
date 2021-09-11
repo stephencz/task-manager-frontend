@@ -11,6 +11,10 @@ const TaskOperations = (props) => {
 
   const dispatch = useDispatch();
 
+  const handleDateToggle = (event) => {
+    
+  }
+
   return (
     <div className="task-operations">
       <input className="search" placeholder="Search"></input>
