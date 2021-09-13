@@ -1,6 +1,6 @@
 import React from 'react';
+import TagEditorList from '../TagEditorList/TagEditorList';
 import './TagManager.css';
-
 
 const TagManager = (props) => {
 
@@ -8,7 +8,8 @@ const TagManager = (props) => {
     <div className="row">
       <div className="col-xl-10 mx-auto">
         <div className="tag-manager">
-          <h1>Tag Manager</h1>
+          <div className="tag-manager-header">Tag Manager</div>
+          <TagEditorList /> 
         </div>
       </div>
     </div>

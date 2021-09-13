@@ -34,7 +34,7 @@ const TaskList = (props) => {
     // If the list either is loading or fails to load, then we
     // display that status. Status becomes null after successful
     // loading.
-    if(status != null) {
+    if(status !== null) {
       return <div className="task-loading-status"> { status } </div>
 
     } else {

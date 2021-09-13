@@ -1,19 +1,20 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-/** Returns a JSON Array of all Tasks. */
-export const getAllTasks = 
-  createAsyncThunk('tasks/getAllTasks', async (dispatch, thunkAPI) => {
-    const response = await axios.get('/tasks/get/all');
-    return response.data;
-  });
-
 /** Creates a new empty task and adds it to the database. */
 export const createNewEmptyTask = 
   createAsyncThunk('tasks/createNewEmptyTask', async (dispatch, thunkAPI) => {    
-    await axios.post('/tasks/new/empty');
-    const response = await axios.get('/tasks/get/latest')
+    await axios.post('/api/v1/tasks/new');
+    const response = await axios.get('/api/v1/tasks/get/latest')
     return response.data[0];
+  });
+
+
+/** Returns a JSON Array of all Tasks. */
+export const getAllTasks = 
+  createAsyncThunk('tasks/getAllTasks', async (dispatch, thunkAPI) => {
+    const response = await axios.get('/api/v1/tasks/get/all');
+    return response.data;
   });
 
 export const saveTasks = 
@@ -25,7 +26,7 @@ export const saveTasks =
       return unsaved_ids.includes(element.task_id) 
     });
 
-    const response = await axios.post('/tasks/save', unsaved_tasks);
+    const response = await axios.post('/api/v1/tasks/save', unsaved_tasks);
     return response;
   });
 
@@ -34,7 +35,7 @@ export const deleteSelectedTasks =
   createAsyncThunk('tasks/deleteSelectedTasks', async (dispatch, thunkAPI) => {
     const state = thunkAPI.getState();
     if(state.tasks.selected.length > 0) {
-      const response = await axios.delete('/tasks/delete/:selected', {
+      const response = await axios.delete('/api/v1/tasks/delete/selected', {
         params: {
           selected: state.tasks.selected
         }

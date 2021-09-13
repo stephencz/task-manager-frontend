@@ -17,16 +17,10 @@ import './TaskDate.css';
  * is associated with a Task. This date could represent a deadline
  * or due date, or something else depending on the user. 
  * 
- * Task's do not start with a date, but can be set by clicking the
- * calendar icon next to the task. Once the date is set it can be
- * cleared by clicking the date and typing backspace or delete.
- * 
  * Uses react-datepicker for date selection.
  * 
  */
 const TaskDate = (props) => {
-
-  const calendarIconRef = useRef();
 
   // Dispatch for Redux actions.
   const dispatch = useDispatch();
@@ -43,10 +37,6 @@ const TaskDate = (props) => {
     }));
     dispatch(addUnsaved({ id: props.id }));
     dispatch(saveTasks());
-  }
-
-  const handleDateBlur = (event) => {
-    dispatch()
   }
 
   /**
@@ -66,7 +56,6 @@ const TaskDate = (props) => {
       return <DatePicker 
         selected={ new Date(props.date) }
         onChange={ (date) => handleDateChange(date) }
-        onBlur={ (event) => handleDateBlur(event)}
         />
     }
   }

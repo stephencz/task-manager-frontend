@@ -5,16 +5,6 @@
   margin-right: 10px;
 }
 
-
-.task .task-date .calendar-button
-{
-  background-image: url('calendar.png');
-  background-size: contain;
-  
-  width: 15px;
-  height: 15px;
-}
-
 .react-datepicker__input-container input
 {
   color: #000;
