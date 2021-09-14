@@ -1,10 +1,68 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import { useDispatch } from 'react-redux';
+import { setTagText } from '../../features/tags';
+import ContentEditable from 'react-contenteditable';
+import './TagText.css';
+
 
 const TagText = (props) => {
 
+  // Real DOM references required by react-contenteditable
+  const innerRef = useRef(null);
+
+  const dispatch = useDispatch();
+
+  const getTagText = () => {
+    if(props.text === null) {
+      dispatch(setTagText({ id: props.id, text: 'New Tag' }));
+      return "New Tag"
+
+    } else {
+      return props.text;
+
+    }
+  }
+
+  /**
+   * Used by react-contenteditable to blur the editable container
+   * when the enter key is pressed.
+   * @param {*} event 
+   */
+  const handleKeyDown = (event) => {
+    // Key Code 13 means ENTER
+    if(event.keyCode === 13) {
+      event.target.blur();
+      event.preventDefault();
+    }
+  }
+
+  /**
+   * Used by react-contenteditable and called when the editable container
+   * is 'blurred', i.e loses focus. When blured the new contents of the
+   * task description is used to update the Redux store.
+   * @param {*} event 
+   */
+  const handleBlur = (event) => { 
+    dispatch(setTagText({ id: props.id, text: event.target.textContent }));
+    // dispatch(addUnsaved({ id: props.id }));
+    // dispatch(saveTasks());
+  }
+
+  const handleChange = (event) => {
+    dispatch(setTagText({ id: props.id, text: event.target.value }))
+    // dispatch(addUnsaved({ id: props.id }));
+  }
+
   return (
     <div className="tag-editor-text">
-      { props.text }
+      <ContentEditable
+        innerRef={ innerRef }
+        html={ getTagText() }
+        disabled={ false }
+        onBlur={ handleBlur }
+        onChange={ handleChange }
+        onKeyDown={ handleKeyDown }
+      />
     </div>
   );
 

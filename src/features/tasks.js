@@ -9,7 +9,6 @@ export const createNewEmptyTask =
     return response.data[0];
   });
 
-
 /** Returns a JSON Array of all Tasks. */
 export const getAllTasks = 
   createAsyncThunk('tasks/getAllTasks', async (dispatch, thunkAPI) => {
