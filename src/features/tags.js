@@ -16,7 +16,14 @@ export const getAllTags =
 
 export const saveTags =
   createAsyncThunk('tags/saveTags', async (dispatch, thunkAPI) => {
+    const tags = thunkAPI.getState().tags.tags;
+    const unsaved_ids = thunkAPI.getState().tags.unsaved;
+    const unsaved_tags = tags.filter((element) => { 
+      return unsaved_ids.includes(element.tag_id) 
+    });
 
+    const response = await axios.post('/api/v1/tags/save', unsaved_tags);
+    return response;
   });
 
 /** Deletes all tasks that are currently selected */
@@ -85,8 +92,13 @@ export const tagsSlice = createSlice({
     },
     clearSelected(state, action) {
       state.selected = [];
+    },
+    addUnsaved(state, action) {
+      state.unsaved = [...state.unsaved, action.payload.id]
+    },
+    clearUnsaved(state, action) {
+      state.unsaved = [];
     }
-
   },
   extraReducers: {
     [getAllTags.pending]: (state, action) => {
@@ -108,6 +120,9 @@ export const tagsSlice = createSlice({
       state.tags = state.tags.filter( value => state.selected.includes(value.tag_id) !== true)
       state.selected = []
     },
+    [saveTags.fulfilled]: (state, action) => {
+      state.unsaved = []
+    }
   }
 })
 
@@ -119,7 +134,10 @@ export const {
   setSelected,
   addSelected,
   removeSelected,
-  clearSelected
+  clearSelected,
+
+  addUnsaved,
+  clearUnsaved
 } = tagsSlice.actions;
 
 export default tagsSlice.reducer;

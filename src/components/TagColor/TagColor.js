@@ -3,7 +3,9 @@ import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
 import { 
   setForegroundColor,
-  setBackgroundColor
+  setBackgroundColor,
+  addUnsaved,
+  saveTags
  } from '../../features/tags';
 
 import ContentEditable from 'react-contenteditable';
@@ -43,10 +45,13 @@ const TagColor = (props) => {
       if(content.length === 4 || content.length === 7) {
         if(props.isFG) {
           dispatch(setForegroundColor({ id: props.id, color: event.target.textContent }));
-    
+
         } else {
           dispatch(setBackgroundColor({ id: props.id, color: event.target.textContent }));
         }
+
+        dispatch(addUnsaved({ id: props.id }))
+        dispatch(saveTags());
       }
     } 
   }

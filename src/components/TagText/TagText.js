@@ -1,8 +1,13 @@
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { setTagText } from '../../features/tags';
+import { 
+  setTagText,
+  addUnsaved,
+  saveTags
+} from '../../features/tags';
 import ContentEditable from 'react-contenteditable';
 import './TagText.css';
+import { saveTasks } from '../../features/tasks';
 
 
 const TagText = (props) => {
@@ -44,13 +49,12 @@ const TagText = (props) => {
    */
   const handleBlur = (event) => { 
     dispatch(setTagText({ id: props.id, text: event.target.textContent }));
-    // dispatch(addUnsaved({ id: props.id }));
-    // dispatch(saveTasks());
+    dispatch(addUnsaved({ id: props.id }));
+    dispatch(saveTags())
   }
 
   const handleChange = (event) => {
     dispatch(setTagText({ id: props.id, text: event.target.value }))
-    // dispatch(addUnsaved({ id: props.id }));
   }
 
   return (
