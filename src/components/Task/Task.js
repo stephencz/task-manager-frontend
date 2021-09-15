@@ -6,6 +6,7 @@ import TaskHandle from '../TaskHandle/TaskHandle';
 import TaskDescription from '../TaskDescription/TaskDescription';
 import TaskTags from '../TaskTags/TaskTags';
 import TaskDate from '../TaskDate/TaskDate';
+import TaskOperations from '../TaskOperations/TaskOperations';
 
 import './Task.css';
 
@@ -41,13 +42,13 @@ const Task = (props) => {
     return 'task';
   }
 
-
   return(
     <div className={ getTaskClassName() }>
       <TaskHandle id={ props.id }/>
       <TaskDescription id={ props.id } description={ props.description } />
       <TaskTags id={ props.id } tags={ props.tags } />
       <TaskDate id={ props.id } date={ props.date } />
+      <TaskOperations id={ props.id } description={ props.description } date={ props.date} tags={ props.tags} />
     </div>
   );
 

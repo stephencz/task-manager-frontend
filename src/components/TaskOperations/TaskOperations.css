@@ -1,12 +1,17 @@
 .task-operations
 {
-  border-bottom: 1px solid #efefef;
-  padding-bottom: 1rem;
+  display: inline-block;
 }
 
-.task-operations input.search
+
+.floating-menu
 {
-  border-radius: 5px;
-  border: 1px solid #8e8e8e;
+  border: 1px solid #232323;
+  background-color: #fff;
+ 
+  position: fixed;
+  width: auto;
+  height: auto;
+
   padding: 5px;
 }
