@@ -46,9 +46,9 @@ const Task = (props) => {
     <div className={ getTaskClassName() }>
       <TaskHandle id={ props.id }/>
       <TaskDescription id={ props.id } description={ props.description } />
-      <TaskTags id={ props.id } tags={ props.tags } />
+      <TaskTags id={ props.id } />
       <TaskDate id={ props.id } date={ props.date } />
-      <TaskOperations id={ props.id } description={ props.description } date={ props.date} tags={ props.tags} />
+      <TaskOperations id={ props.id } description={ props.description } date={ props.date} />
     </div>
   );
 

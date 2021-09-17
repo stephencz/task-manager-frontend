@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllTasks } from '../../features/tasks';
+import { getAllTaskTags } from '../../features/task_tags';
 
 import Task from '../Task/Task';
 import './TaskList.css';
@@ -17,6 +18,7 @@ const TaskList = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(getAllTaskTags());
     dispatch(getAllTasks());
   }, [dispatch])
 
