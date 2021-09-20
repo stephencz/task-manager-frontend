@@ -8,7 +8,7 @@ const store = configureStore({
   reducer: {
     tasks: tasksReducer,
     tags: tagsReducer,
-    tasktags: taskTagsReducer
+    task_tags: taskTagsReducer
   },
   middleware: [thunk]
 })

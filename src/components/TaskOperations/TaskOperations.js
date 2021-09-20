@@ -8,7 +8,15 @@ import {
   addSelected,
   addUnsaved,
   saveTasks
- } from '../../features/tasks';
+} from '../../features/tasks';
+
+import {
+  addTaskTag,
+  removeTaskTag,
+  saveTaskTags,
+  deleteTaskTags,
+  getAllTaskTags
+} from '../../features/task_tags';
 
 
 import './TaskOperations.css'
@@ -20,6 +28,7 @@ const TaskOperations = (props) => {
   const tasks = useSelector((state) => state.tasks.tasks);
   const selected = useSelector(state => state.tasks.selected);
   const tags = useSelector((state) => state.tags.tags);
+  const task_tags = useSelector((state) => state.task_tags.task_tags)
 
   const [addTagMenuVisible, setAddTagMenuVisible] = useState(false);
   const [removeTagMenuVisible, setRemoveTagMenuVisible] = useState(false);
@@ -32,31 +41,116 @@ const TaskOperations = (props) => {
     }
   }
 
-  const handleRemoveTagMenuToggle = (event) => {
-    if(removeTagMenuVisible) {
-      setAddTagMenuVisible(false);
-    } else {
-      setAddTagMenuVisible(true);
-    }
+  const handleAddTag = (element) => {
+    dispatch(addTaskTag({ tag_id: element.tag_id, task_id: props.id }));
+    dispatch(saveTaskTags());
+    dispatch(getAllTaskTags());
   }
 
   const generateAddTagMenu = () => {
     if(addTagMenuVisible) {
+
+      // We get an array of tag id's which the task is known to have.
+      let matches = []
+      for(let i = 0; i < task_tags.length; i++) {
+        if(task_tags[i].task_id === props.id) {
+          matches.push(task_tags[i].tag_id);
+        }
+      }
+
+      console.log("Matches: " + matches);
+
+      // We get an array of tag that the task DOES NOT have.
+      let addableIDs = []
+      for(let i = 0; i < tags.length; i++) {
+        if(!matches.includes(tags[i].tag_id)) {
+          addableIDs.push(tags[i].tag_id);
+        }
+      }  
+
+      console.log("Addable IDs: " + addableIDs);
+
+      // We get an array of Tag objects matching the tags the task DOES NOT have.
+      const addableTags = tags.filter((element) => addableIDs.includes(element.tag_id));
+      console.log("Addable Tags: " + addableTags);
+
+      let buttons = addableTags.map((element) => {
+        return <div 
+          key={element.tag_id} 
+          className="add-tag-button"
+          onClick={ () => handleAddTag(element) }
+          >
+            { element.tag_text }
+          </div>
+      })
+      console.log("Buttons: " + buttons);
+
       return (
         <div className="floating-menu">
-          <p>Test</p>
+          { buttons }
         </div>
       );
-    } else {
-
     }
+  }
+
+  const handleRemoveTagMenuToggle = (event) => {
+    if(removeTagMenuVisible) {
+      setRemoveTagMenuVisible(false);
+    } else {
+      setRemoveTagMenuVisible(true);
+    }
+  }
+
+  const handleRemoveTag = (element) => {
+    const taskTagToRemove = task_tags.find(taskTagObjects => taskTagObjects.tag_id === element.tag_id && taskTagObjects.task_id === props.id);
+    dispatch(removeTaskTag({ task_tag_id: taskTagToRemove.task_tag_id }));
+    dispatch(deleteTaskTags());
+    dispatch(getAllTaskTags());
   }
 
   const generateRemoveTagMenu = () => {
     if(removeTagMenuVisible) {
 
-    } else {
-      
+     // We get an array of tag id's which the task is known to have.
+     let matches = []
+     for(let i = 0; i < task_tags.length; i++) {
+       if(task_tags[i].task_id === props.id) {
+         matches.push(task_tags[i].tag_id);
+       }
+     }
+
+     console.log("Matches: " + matches);
+
+     // We get an array of tag that the task DOES have.
+     let removeableIDs = []
+     for(let i = 0; i < tags.length; i++) {
+       if(matches.includes(tags[i].tag_id)) {
+        removeableIDs.push(tags[i].tag_id);
+       }
+     }  
+
+     console.log("Removable IDs: " + removeableIDs);
+
+     // We get an array of Tag objects matching the tags the task DOES NOT have.
+     const removeableTags = tags.filter((element) => removeableIDs.includes(element.tag_id));
+     console.log("Addable Tags: " + removeableTags);
+
+     let buttons = removeableTags.map((element) => {
+       return <div 
+        key={element.tag_id} 
+        className="remove-tag-button"
+        onClick={ () => { handleRemoveTag(element) } }
+        >
+          { element.tag_text }
+        </div>
+     })
+     console.log("Buttons: " + buttons);
+
+     return (
+       <div className="floating-menu">
+         { buttons }
+       </div>
+     );
     }
   }
 

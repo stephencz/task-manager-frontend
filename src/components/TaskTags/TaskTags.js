@@ -1,12 +1,10 @@
 import React from 'react';
-
-import { useSelector } from 'react-redux';
-
+import { useSelector, useDispatch } from 'react-redux';
 import './TaskTags.css';
 
 const TaskTags = (props) => {
 
-  const task_tags = useSelector((state) => state.tasktags.task_tags);
+  const task_tags = useSelector((state) => state.task_tags.task_tags);
   const tags = useSelector((state) => state.tags.tags);
 
   const getTag = (id) => {
@@ -30,7 +28,7 @@ const TaskTags = (props) => {
             backgroundColor: tag.tag_bg
           }
   
-          return <div className="tag" style={tagStyle}> {tag.tag_text} </div>
+          return <div key={tag.tag_id} className="tag" style={tagStyle}> {tag.tag_text} </div>
         }        
       });
 
