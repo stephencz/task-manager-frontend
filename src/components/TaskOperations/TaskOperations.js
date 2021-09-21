@@ -13,6 +13,7 @@ import {
 import {
   addTaskTag,
   removeTaskTag,
+  clearTaskTags,
   saveTaskTags,
   deleteTaskTags,
   getAllTaskTags
@@ -43,8 +44,8 @@ const TaskOperations = (props) => {
 
   const handleAddTag = (element) => {
     dispatch(addTaskTag({ tag_id: element.tag_id, task_id: props.id }));
+    dispatch(clearTaskTags());
     dispatch(saveTaskTags());
-    dispatch(getAllTaskTags());
   }
 
   const generateAddTagMenu = () => {
@@ -104,8 +105,8 @@ const TaskOperations = (props) => {
   const handleRemoveTag = (element) => {
     const taskTagToRemove = task_tags.find(taskTagObjects => taskTagObjects.tag_id === element.tag_id && taskTagObjects.task_id === props.id);
     dispatch(removeTaskTag({ task_tag_id: taskTagToRemove.task_tag_id }));
+     dispatch(clearTaskTags());
     dispatch(deleteTaskTags());
-    dispatch(getAllTaskTags());
   }
 
   const generateRemoveTagMenu = () => {

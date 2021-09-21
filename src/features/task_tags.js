@@ -10,21 +10,30 @@ export const getAllTaskTags =
 export const saveTaskTags =
   createAsyncThunk('taskTags/saveTaskTag', async (dispatch, thunkAPI) => {
     const taskTagsToAdd = thunkAPI.getState().task_tags.add;
-    const response = await axios.post('/api/v1/task_tags/save', taskTagsToAdd);
-    
-    return response;
+    const postResponse = await axios.post('/api/v1/task_tags/save', taskTagsToAdd);
+    if(postResponse.status === 200) {
+      const getResponse = await axios.get('/api/v1/task_tags/get/all')
+      return getResponse.data
+    }
+
+    return [];
   });
 
 export const deleteTaskTags =
   createAsyncThunk('taskTags/deleteTaskTag', async (dispatch, thunkAPI) => {
     const taskTagsToRemove = thunkAPI.getState().task_tags.remove
-    const response = await axios.delete('/api/v1/task_tags/delete', {
+    const deleteResponse = await axios.delete('/api/v1/task_tags/delete', {
       params: {
         remove: taskTagsToRemove
       }
     })
 
-    return response;
+    if(deleteResponse.status === 200) {
+      const getResponse = await axios.get('/api/v1/task_tags/get/all')
+      return getResponse.data;
+    }
+
+    return []
   }); 
 
 export const taskTagsSlice = createSlice({
@@ -38,14 +47,18 @@ export const taskTagsSlice = createSlice({
   
   reducers: {
     addTaskTag: (state, action) => {
-      state.add.push({
+      state.add = [...state.add, {
         tag_id: action.payload.tag_id,
         task_id: action.payload.task_id
-      });
+      }];
     },
 
     removeTaskTag: (state, action) => {
-      state.remove.push(action.payload.task_tag_id);
+      state.remove = [...state.remove, action.payload.task_tag_id];
+    },
+
+    clearTaskTags: (state, action) => {
+      state.task_tags = []
     }
   },
   extraReducers: {
@@ -53,9 +66,11 @@ export const taskTagsSlice = createSlice({
       state.task_tags = action.payload;
     },
     [saveTaskTags.fulfilled]: (state, action) => {
+      state.task_tags = action.payload;
       state.add = []
     },
     [deleteTaskTags.fulfilled]: (state, action) => {
+      state.task_tags = action.payload;
       state.remove = []
     }
   }
@@ -63,7 +78,8 @@ export const taskTagsSlice = createSlice({
 
 export const { 
   addTaskTag,
-  removeTaskTag
+  removeTaskTag,
+  clearTaskTags
 } = taskTagsSlice.actions;
 
 export default taskTagsSlice.reducer;
