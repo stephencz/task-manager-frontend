@@ -1,3 +1,10 @@
+.task-tags
+{
+  margin-left: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 .task-tags,
 .task-tags .tag
 {
@@ -8,10 +15,11 @@
 .task-tags .tag
 {
   border-radius: 125px;
+
   padding: 5px;
   padding-left: 10px;
   padding-right: 10px;
-  margin-right: 10px;
-  margin-top: 10px;
+
+  margin-right: 10px;  
 }
 

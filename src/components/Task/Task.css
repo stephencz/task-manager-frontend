@@ -9,6 +9,10 @@
 
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+
+  border-bottom: 1px dotted #868686;
 
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
@@ -39,6 +43,5 @@
 {
   .task
   {
-    border-bottom: 1px dotted #868686;
   }
 }
