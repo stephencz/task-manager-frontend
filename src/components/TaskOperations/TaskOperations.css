@@ -1,6 +1,7 @@
 .task-operations
 {
   display: inline-block;
+  margin-top: 10px;
 }
 
 
@@ -9,7 +10,7 @@
   border: 1px solid #232323;
   background-color: #fff;
  
-  position: fixed;
+  position: absolute;
   width: auto;
   height: auto;
 

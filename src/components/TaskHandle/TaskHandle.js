@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSelected, addSelected, removeSelected, clearSelected } from '../../features/tasks';
+
 import './TaskHandle.css';
 
 const TaskHandle = (props) => {

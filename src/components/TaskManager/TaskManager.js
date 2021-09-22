@@ -18,12 +18,12 @@ const TaskManager = (props) => {
   const dispatch = useDispatch();
 
   return (
-    <div className="row">
-      <div className="col-xl-10 mx-auto">
-        <div className="task-manager">
+    <div className="task-manager-wrapper">
+      <div className="row">
+
+        <div className="col-xl-12 mx-auto">
           <div className="task-sort">
             <input className="search" placeholder="Search"></input>
-            
             <select>
               <option value="">Default</option>
               <option value="">Sort by Description</option>
@@ -35,9 +35,15 @@ const TaskManager = (props) => {
               New Task
             </button>
           </div>
+        </div>
+      </div>
+
+      <div className="row">
+        <div className="col-xl-12 mx-auto">
           <TaskList />
         </div>
       </div>
+
     </div>
 
   );

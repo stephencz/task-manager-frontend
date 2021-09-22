@@ -28,7 +28,9 @@ const TaskTags = (props) => {
             backgroundColor: tag.tag_bg
           }
   
-          return <div key={tag.tag_id} className="tag" style={tagStyle}> {tag.tag_text} </div>
+          return (
+            <div key={tag.tag_id} className="tag" style={tagStyle}> {tag.tag_text} </div>
+          );
         }        
       });
 

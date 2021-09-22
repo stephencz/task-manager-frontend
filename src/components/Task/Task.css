@@ -1,5 +1,12 @@
 .task
 {
+  display: flex;
+  flex-flow: row nowrap;
+
+  justify-content: flex-start;
+  align-content: flex-start;
+  align-items: flex-start;
+
   padding-top: 1.25rem;
   padding-bottom: 1.25rem;
 
@@ -16,18 +23,6 @@
   background-color: #ececec;
 }
 
-.task .task-description,
-.task .task-date,
-.task .task-tags
-{
-  display: inline-block;
-}
-
-.task .task-description
-{
-  margin-right: 10px;
-}
-
 .task .task-date.overdue
 {
   color: #ffff;
@@ -38,4 +33,12 @@
 {
   color: #000;
   background-color: #ffd350;
+}
+
+@media (max-width: 991.98px)
+{
+  .task
+  {
+    border-bottom: 1px dotted #868686;
+  }
 }

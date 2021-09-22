@@ -3,18 +3,20 @@
   display: inline-block;
   border-radius: 100px;
   margin-right: 10px;
+  margin-top: 10px;
+  font-size: 0.75rem;
 }
 
 .react-datepicker__input-container input
 {
   color: #000;
-  background-color: #efefef;
+  background-color: #ddd;
 
   border-radius: 100px;
-  border: none;
+  border: 1px solid #d5d5d5;
   
   width: 80px;
-  padding: 5px 10px 5px 10px;
+  padding: 5px 5px 5px 5px;
 
   text-align: center;
 
@@ -24,7 +26,8 @@
 
 .react-datepicker__input-container input:hover
 {
-  color: #fff;
+  color: #232323;
+  background-color: #c2c2c2;
 }
 
 

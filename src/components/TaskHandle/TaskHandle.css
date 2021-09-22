@@ -1,7 +1,16 @@
 .task-handle
 {
   display: inline-block;
+  flex-grow: 0;
+  flex-shrink: 0;
+
+
+  background-image: url(./handle.png);
+  background-size: 20px;
+
   width: 20px;
   height: 20px;
-  background-color: #f00;
+
+  margin-right: 20px;
+  margin-top: 10px;
 }

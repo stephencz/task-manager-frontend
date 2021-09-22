@@ -30,6 +30,10 @@ const TaskDescription = (props) => {
       event.target.blur();
       event.preventDefault();
     }
+
+    if(event.target.textContent.length > 255) {
+      event.target.textContent = event.target.textContent.substring(0, 255);
+    }
   }
 
   /**
@@ -38,7 +42,12 @@ const TaskDescription = (props) => {
    * task description is used to update the Redux store.
    * @param {*} event 
    */
-  const handleBlur = (event) => { 
+  const handleBlur = (event) => {
+    
+    if(event.target.textContent.length > 255) {
+      event.target.textContent = event.target.textContent.substring(0, 255);
+    }
+
     dispatch(setTaskDescription({ id: props.id, description: event.target.textContent }));
     dispatch(addUnsaved({ id: props.id }));
     dispatch(saveTasks());

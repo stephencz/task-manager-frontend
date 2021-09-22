@@ -1,0 +1,17 @@
+.task-tags,
+.task-tags .tag
+{
+  display: inline-block;
+  font-size: 0.75rem;
+}
+
+.task-tags .tag
+{
+  border-radius: 125px;
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
