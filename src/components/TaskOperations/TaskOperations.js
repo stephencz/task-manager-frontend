@@ -95,15 +95,15 @@ const TaskOperations = (props) => {
         }
       }
 
-      if(tags.length > 0) {
+      // We get an array of tag that the task DOES NOT have.
+      let addableIDs = []
+      for(let i = 0; i < tags.length; i++) {
+        if(!matches.includes(tags[i].tag_id)) {
+          addableIDs.push(tags[i].tag_id);
+        }
+      }  
 
-        // We get an array of tag that the task DOES NOT have.
-        let addableIDs = []
-        for(let i = 0; i < tags.length; i++) {
-          if(!matches.includes(tags[i].tag_id)) {
-            addableIDs.push(tags[i].tag_id);
-          }
-        }  
+      if(addableIDs.length > 0) {
 
         // We get an array of Tag objects matching the tags the task DOES NOT have.
         const addableTags = tags.filter((element) => addableIDs.includes(element.tag_id));
@@ -117,19 +117,21 @@ const TaskOperations = (props) => {
               { element.tag_text }
             </div>
         })
-        console.log("Buttons: " + buttons);
 
         return (
           <div ref={addTagRef} className="floating-menu">
             { buttons }
           </div>
         );
+        
       } else {
+
         return (
           <div ref={addTagRef} className="floating-menu">
             No tags to add
           </div>
         );
+
       }
     }
   }
