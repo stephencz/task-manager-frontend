@@ -30,10 +30,6 @@ const TaskDescription = (props) => {
       event.target.blur();
       event.preventDefault();
     }
-
-    if(event.target.textContent.length > 255) {
-      event.target.textContent = event.target.textContent.substring(0, 255);
-    }
   }
 
   /**
@@ -45,16 +41,17 @@ const TaskDescription = (props) => {
   const handleBlur = (event) => {
     
     // Trim to a length of 255
-    if(event.target.textContent.length > 255) {
-      event.target.textContent = event.target.textContent.substring(0, 255);
-    }
-
-    // Remove special characters
-    
+    if(event.target.textContent.length > 253) {
+      event.target.textContent = event.target.textContent.substring(0, 253);
+      
+    } 
 
     dispatch(setTaskDescription({ id: props.id, description: event.target.textContent }));
     dispatch(addUnsaved({ id: props.id }));
     dispatch(saveTasks());
+  }
+
+  const handleOnChange = (event) => {
   }
 
   /**
@@ -82,6 +79,7 @@ const TaskDescription = (props) => {
         disabled={ false }
         onBlur = { handleBlur }
         onKeyDown = { handleKeyDown }
+        onChange = { handleOnChange }
         />
     </div>
   );

@@ -31,12 +31,15 @@ const TaskDate = (props) => {
    */
   const handleDateChange = (date) => {
 
-    dispatch(setTaskDate({ 
-      id: props.id, 
-      newDate: date.toISOString()
-    }));
-    dispatch(addUnsaved({ id: props.id }));
-    dispatch(saveTasks());
+    if(date != null) {
+      dispatch(setTaskDate({ 
+        id: props.id, 
+        newDate: date.toISOString()
+      }));
+      dispatch(addUnsaved({ id: props.id }));
+      dispatch(saveTasks());
+    }
+    
   }
 
   /**

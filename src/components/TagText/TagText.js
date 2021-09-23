@@ -18,13 +18,12 @@ const TagText = (props) => {
   const dispatch = useDispatch();
 
   const getTagText = () => {
-    if(props.text === null) {
-      dispatch(setTagText({ id: props.id, text: 'New Tag' }));
-      return "New Tag"
+    if(props.text === null || props.text === "") {
+      dispatch(setTagText({ id: props.id, text: 'Empty Tag' }));
+      return "Empty Tag"
 
     } else {
       return props.text;
-
     }
   }
 
@@ -48,6 +47,10 @@ const TagText = (props) => {
    * @param {*} event 
    */
   const handleBlur = (event) => { 
+    if(event.target.textContent.length > 126) {
+      event.target.textContent = event.target.textContent.substring(0, 126);
+    }
+
     dispatch(setTagText({ id: props.id, text: event.target.textContent }));
     dispatch(addUnsaved({ id: props.id }));
     dispatch(saveTags())
