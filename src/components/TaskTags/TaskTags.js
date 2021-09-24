@@ -1,5 +1,5 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import './TaskTags.css';
 
 const TaskTags = (props) => {
@@ -31,7 +31,9 @@ const TaskTags = (props) => {
           return (
             <div key={tag.tag_id} className="tag" style={tagStyle}> {tag.tag_text} </div>
           );
-        }        
+        }   
+        
+        return null;
       });
 
       return results;

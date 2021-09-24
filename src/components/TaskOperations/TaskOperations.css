@@ -24,6 +24,8 @@
   background-size: 20px;
   width: 20px;
   height: 20px;
+  margin-right: 5px;
+
 }
 
 .task-operations .add-task-tags-button
@@ -32,6 +34,7 @@
   background-size: 20px;
   width: 20px;
   height: 20px; 
+  margin-right: 5px;
 }
 
 .task-operations .remove-task-tags-button
@@ -40,6 +43,8 @@
   background-size: 20px;
   width: 20px;
   height: 20px; 
+
+  margin-right: 20px;
 }
 
 .task-operations .remove-task-button

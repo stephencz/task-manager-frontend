@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -6,8 +6,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import {
   setTaskDate,
   addUnsaved, 
-  saveTasks,
-  toggleDate
+  saveTasks
   } from '../../features/tasks';
 
 import './TaskDate.css';

@@ -1,13 +1,15 @@
 import React, { useRef } from 'react';
 import { useDispatch } from 'react-redux';
+
 import { 
   setTagText,
   addUnsaved,
   saveTags
 } from '../../features/tags';
+
 import ContentEditable from 'react-contenteditable';
+
 import './TagText.css';
-import { saveTasks } from '../../features/tasks';
 
 
 const TagText = (props) => {

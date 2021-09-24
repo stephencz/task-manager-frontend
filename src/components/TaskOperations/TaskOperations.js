@@ -15,8 +15,7 @@ import {
   removeTaskTag,
   clearTaskTags,
   saveTaskTags,
-  deleteTaskTags,
-  getAllTaskTags
+  deleteTaskTags
 } from '../../features/task_tags';
 
 

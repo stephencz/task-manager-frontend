@@ -45,6 +45,88 @@ export const deleteSelectedTasks =
     }
   });
 
+const doesTaskHaveTags = (task, task_tags) => {
+  const result = task_tags.filter((x) => {
+    return task.task_id === x.task_id;
+  });
+
+  return result.length > 0 ? true : false;
+}
+
+/**
+ * 
+ * @param {*} tasks 
+ */
+const sortByDate = (tasks) => {
+  // Sort date portion from earliest to latest
+  tasks.sort((a, b) => {
+    let dateA = new Date(a);
+    let dateB = new Date(b);
+
+    console.log(dateA);
+    console.log(dateB);
+
+    if(dateA < dateB) return -1;
+    if(dateA > dateB) return 1;
+
+    return 0;
+  });
+}
+
+/**
+ * 
+ * @param {*} tasks 
+ * @param {*} task_tags 
+ * @param {*} tags 
+ * @returns 
+ */
+const sortAlphabeticallyByTag = (tasks, task_tags, tags) => {
+  return tasks.sort((a, b) => {
+
+    // Get task_tag objects belonging to task a
+    let a_tags = task_tags.filter((x) => {
+      if(a.task_id === x.task_id) {
+        return x.tag_id;
+      }
+
+      return false;
+    });
+
+    // Get task_tag objects belonging to task b
+    let b_tags = task_tags.filter((x) => {
+      if(b.task_id === x.task_id) {
+        return x.tag_id;
+      }
+
+      return false;
+    });
+
+    // Get tag objects matching a's task_tags
+    let a_text = tags.filter((x) => {
+      if(a_tags[0].tag_id === x.tag_id) {
+        return x.tag_text
+      }
+
+      return false;
+    })
+
+    // Get tag objects matching b's task_tags
+    let b_text = tags.filter((x) => {
+      if(b_tags[0].tag_id === x.tag_id) {
+        return x.tag_text
+      }
+
+      return false;
+    });
+
+    // Sort on text.
+    if(a_text[0].tag_text < b_text[0].tag_text) return -1;
+    if(a_text[0].tag_text > b_text[0].tag_text) return 1;
+  
+    return 0;
+  });
+}
+
 export const tasksSlice = createSlice({
   name: 'tasks',
   
@@ -52,7 +134,9 @@ export const tasksSlice = createSlice({
     tasks: [],              // An Array of Task Objects
     selected: [],           // An Array of task ids representing tasks that have been selected.
     unsaved: [],            // An Array of task ids representing tasks that have been changed, but not saved.
-    status: null            // The status of task loading.
+    status: null,           // The status of task loading.
+    sort_mode: 'default',   // Which sort mode the task manager is in.
+    show_mode: 'all'        // Which show mode the task manager is in.
   },
   
   reducers: {
@@ -198,6 +282,42 @@ export const tasksSlice = createSlice({
      */
     clearUnsaved(state, action) {
       state.unsaved = [];
+    },
+
+    /**
+     * Sets the sort mode of the task manager.
+     * @param {*} state 
+     * @param {*} action 
+     */
+    setSortMode(state, action) {
+      state.sort_mode = action.payload;
+    },
+
+    setShowMode(state, action) {
+      state.sort_mode = action.payload;
+    },
+
+    sortTasksByDefault(state, action) {
+
+      let task_tags = action.payload.task_tags;
+      let tags = action.payload.tags;
+
+      let hasDate = [];
+      let noDate = [];
+
+      state.tasks.forEach((x) => {
+        if(x.task_date !== null) {
+          hasDate.push(x);
+        } else {
+          noDate.push(x);
+        }
+      });
+
+      sortByDate(hasDate);
+      sortAlphabeticallyByTag(noDate, task_tags, tags);
+
+      //Set tasks to combined array
+      state.tasks = [...hasDate, ...noDate];
     }
   },
 
@@ -256,7 +376,12 @@ export const {
   clearSelected,
 
   addUnsaved,
-  clearUnsaved
+  clearUnsaved,
+
+  setSortMode,
+  setShowMode,
+
+  sortTasksByDefault
 
 } = tasksSlice.actions;
 

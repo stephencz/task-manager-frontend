@@ -1,11 +1,7 @@
 import React from 'react';
 
-import { useDispatch } from 'react-redux';
-import {
-  createNewEmptyTask
-} from '../../features/tasks';
-
 import TaskList from '../TaskList/TaskList';
+import TaskSearchSort from '../TaskSearchSort/TaskSearchSort';
 import './TaskManager.css';
 
 /**
@@ -15,26 +11,12 @@ import './TaskManager.css';
  */
 const TaskManager = (props) => {
   
-  const dispatch = useDispatch();
-
   return (
     <div className="task-manager-wrapper">
       <div className="row">
 
         <div className="col-xl-12 mx-auto">
-          <div className="task-sort">
-            <input className="search" placeholder="Search"></input>
-            <select>
-              <option value="">Default</option>
-              <option value="">Sort by Description</option>
-              <option value="">Sort by Date</option>
-              <option value="">Sort by Tag</option>
-            </select>
-            
-            <button onClick={ () => dispatch(createNewEmptyTask()) }>
-              New Task
-            </button>
-          </div>
+          <TaskSearchSort />
         </div>
       </div>
 
