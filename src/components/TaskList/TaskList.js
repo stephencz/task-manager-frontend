@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getAllTasks } from '../../features/tasks';
 import { getAllTaskTags } from '../../features/task_tags';
+import sortTasks from '../../sort';
 
 import Task from '../Task/Task';
 import './TaskList.css';
@@ -17,14 +18,15 @@ const TaskList = (props) => {
   // up to date list of all tasks owned by the user.
   const dispatch = useDispatch();
 
+  // Redux State
+  const tasks = useSelector((state) => state.tasks.tasks);
+  const task_tags = useSelector((state) => state.task_tags.task_tags);
+  const status = useSelector((state) => state.tasks.status);
+
   useEffect(() => {
     dispatch(getAllTaskTags());
     dispatch(getAllTasks());
   }, [dispatch])
-
-  // Redux State
-  const tasks = useSelector((state) => state.tasks.tasks);
-  const status = useSelector((state) => state.tasks.status);
 
   /**
    * Generates the list of tasks and the status of task retrieval.

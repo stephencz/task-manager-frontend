@@ -41,9 +41,9 @@ const TaskSearchSort = (props) => {
   const tags = useSelector((state) => state.tags.tags);
   const sortMode = useSelector((state) => state.tasks.sort_mode)
 
-  const handleSortChange = (event, mode) => {
+  const handleSortChange = (mode) => {
     dispatch(setSortMode(mode))
-    sortTasks(dispatch, sortMode, task_tags, tags)
+    sortTasks(dispatch, mode, task_tags, tags)
   }
 
   return (
@@ -52,9 +52,9 @@ const TaskSearchSort = (props) => {
         <input className="search" placeholder="Search"></input>
         <select className="all-sort">
           <option value="default" onClick={ () => handleSortChange('default') }>Default</option>
-          <option value="sort-by-description" onClick={ () => dispatch(setSortMode('description')) }>Sort by Description</option>
-          <option value="sort-by-date" onClick={ () => dispatch(setSortMode('date')) }>Sort by Date</option>
-          <option value="sory-by-tag" onClick={ () => dispatch(setSortMode('tag')) }>Sort by Tag</option>
+          <option value="sort-by-description" onClick={ () => handleSortChange('description') }>Sort by Description</option>
+          <option value="sort-by-date" onClick={ () => handleSortChange('date') }>Sort by Date</option>
+          <option value="sory-by-tag" onClick={ () => handleSortChange('tag') }>Sort by Tag</option>
         </select>
 
         <select className="show-only">

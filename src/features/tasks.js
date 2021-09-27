@@ -60,8 +60,8 @@ const doesTaskHaveTags = (task, task_tags) => {
 const sortByDate = (tasks) => {
   // Sort date portion from earliest to latest
   tasks.sort((a, b) => {
-    let dateA = new Date(a);
-    let dateB = new Date(b);
+    let dateA = new Date(a.task_date);
+    let dateB = new Date(b.task_date);
 
     console.log(dateA);
     console.log(dateB);
@@ -101,28 +101,56 @@ const sortAlphabeticallyByTag = (tasks, task_tags, tags) => {
       return false;
     });
 
-    // Get tag objects matching a's task_tags
-    let a_text = tags.filter((x) => {
-      if(a_tags[0].tag_id === x.tag_id) {
-        return x.tag_text
+    // If either task a or b doesn't have a tag push it to the bottom
+    if(a_tags.length <= 0 || b_tags.length <= 0){
+      if(a_tags.length <= 0) {
+        return 1;
+      } else {
+        return -1;
       }
+    }
 
-      return false;
-    })
+    else {
+      // Get tag objects matching a's task_tags
+      let a_text = tags.filter((x) => {
+        if(a_tags[0].tag_id === x.tag_id) {
+          return x.tag_text
+        }
 
-    // Get tag objects matching b's task_tags
-    let b_text = tags.filter((x) => {
-      if(b_tags[0].tag_id === x.tag_id) {
-        return x.tag_text
-      }
+        return false;
+      })
 
-      return false;
-    });
+      // Get tag objects matching b's task_tags
+      let b_text = tags.filter((x) => {
+        if(b_tags[0].tag_id === x.tag_id) {
+          return x.tag_text
+        }
 
+        return false;
+      });
+
+      // Sort on text.
+      if(a_text[0].tag_text < b_text[0].tag_text) return -1;
+      if(a_text[0].tag_text > b_text[0].tag_text) return 1;
+
+      return 0;
+    }
+  });
+}
+
+/**
+ * 
+ * @param {*} tasks 
+ * @param {*} task_tags 
+ * @param {*} tags 
+ * @returns 
+ */
+const sortAlphabeticallyByDescription = (tasks) => {
+  return tasks.sort((a, b) => {
     // Sort on text.
-    if(a_text[0].tag_text < b_text[0].tag_text) return -1;
-    if(a_text[0].tag_text > b_text[0].tag_text) return 1;
-  
+    if(a.task_description < b.task_description) return -1;
+    if(a.task_description > b.task_description) return 1;
+
     return 0;
   });
 }
@@ -305,6 +333,7 @@ export const tasksSlice = createSlice({
       let hasDate = [];
       let noDate = [];
 
+      //Dividing tasks into tags with dates and tasks without dates.
       state.tasks.forEach((x) => {
         if(x.task_date !== null) {
           hasDate.push(x);
@@ -313,11 +342,28 @@ export const tasksSlice = createSlice({
         }
       });
 
-      sortByDate(hasDate);
       sortAlphabeticallyByTag(noDate, task_tags, tags);
+      sortByDate(hasDate);
 
       //Set tasks to combined array
       state.tasks = [...hasDate, ...noDate];
+    },
+
+    sortTasksByTag(state, action) {
+
+      let task_tags = action.payload.task_tags;
+      let tags = action.payload.tags;
+
+      let temp = state.tasks
+
+      sortAlphabeticallyByTag(temp, task_tags, tags);
+  
+      state.tasks = temp;
+    },
+
+    sortTasksByDescription(state, action) {
+      //Set tasks to combined array
+      state.tasks = sortAlphabeticallyByDescription(state.tasks);
     }
   },
 
@@ -381,7 +427,10 @@ export const {
   setSortMode,
   setShowMode,
 
-  sortTasksByDefault
+  sortTasksByDefault,
+  sortTasksByDescription,
+  sortTasksByTag,
+
 
 } = tasksSlice.actions;
 
