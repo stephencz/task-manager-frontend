@@ -1,11 +1,25 @@
 .tag-editor
 {
+  display: flex;
+  flex-flow: row nowrap;
+
+  justify-content: flex-start;
+  align-content: flex-start;
+  align-items: flex-start;
+
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+
+  border-bottom: 1px dotted #868686;
+
   -webkit-touch-callout: none; /* iOS Safari */
-  -webkit-user-select: none; /* Safari */
-   -khtml-user-select: none; /* Konqueror HTML */
-     -moz-user-select: none; /* Old versions of Firefox */
-      -ms-user-select: none; /* Internet Explorer/Edge */
-          user-select: none;
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none;
 }
 
 .tag-editor.selected

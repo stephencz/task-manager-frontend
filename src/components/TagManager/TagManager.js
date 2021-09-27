@@ -11,7 +11,7 @@ const TagManager = (props) => {
     <div className="row">
       <div className="col-xl-12 mx-auto">
         <div className="tag-manager">
-          <div className="tag-manager-header"><h1>Tag Manager</h1></div>
+          <div className="tag-manager-header">Tag Manager</div>
           <TagOperations />
           <TagEditorList /> 
         </div>

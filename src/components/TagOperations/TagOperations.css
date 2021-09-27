@@ -1,0 +1,18 @@
+.tag-operations
+{
+  display: flex;
+  flex-flow: row nowrap;
+
+  justify-content: flex-start;
+  align-content: flex-start;
+  align-items: flex-start;
+}
+
+
+.tag-operations button.add-tag,
+.tag-operations button.remove-tag
+{
+  border-radius: 5px; 
+  border: 1px solid #cacaca;
+  margin-right: 10px;
+}

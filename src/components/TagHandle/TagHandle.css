@@ -1,6 +1,17 @@
 .tag-editor-handle
 {
   display: inline-block;
+  flex-grow: 0;
+  flex-shrink: 0;
+
+
+  background-image: url(./handle.png);
+  background-size: 20px;
+
   width: 20px;
   height: 20px;
+
+  margin-right: 20px;
+  margin-top: auto;
+  margin-bottom: auto;
 }
