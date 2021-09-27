@@ -15,13 +15,13 @@ const TaskManager = (props) => {
     <div className="task-manager-wrapper">
       <div className="row">
 
-        <div className="col-xl-12 mx-auto">
+        <div className="col-xl-8 mx-auto">
           <TaskSearchSort />
         </div>
       </div>
 
       <div className="row">
-        <div className="col-xl-12 mx-auto">
+        <div className="col-xl-8 mx-auto">
           <TaskList />
         </div>
       </div>

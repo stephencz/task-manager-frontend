@@ -9,7 +9,7 @@ const TagManager = (props) => {
 
   return (
     <div className="row">
-      <div className="col-xl-12 mx-auto">
+      <div className="col-xl-8 mx-auto">
         <div className="tag-manager">
           <div className="tag-manager-header">Tag Manager</div>
           <TagOperations />

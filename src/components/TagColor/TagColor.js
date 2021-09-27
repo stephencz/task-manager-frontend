@@ -86,7 +86,6 @@ const TagColor = (props) => {
 
   return (
     <div className="tag-editor-color">
-      {getSpanText()} 
       <ContentEditable
         innerRef={ innerRef }
         html={ getTagColorText() }
