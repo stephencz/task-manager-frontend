@@ -2,10 +2,7 @@ import env from "react-dotenv";
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-console.log(env)
 const PROXY = env.PROXY;
-
-console.log(PROXY)
 
 /** Creates a new empty task and adds it to the database. */
 export const createNewEmptyTask = 

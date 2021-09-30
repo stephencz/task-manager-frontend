@@ -5,11 +5,18 @@ import { getAllTags } from '../../features/tags';
 import TagEditor from '../TagEditor/TagEditor';
 import './TagEditorList.css';
 
+/**
+ * The TagEditorList component represents a list of TagEditor
+ * components representing all Tags available to the task manager.
+ * @param {*} props 
+ * @returns 
+ */
 const TagEditorList = (props) => {
 
-  
   const dispatch = useDispatch();
 
+  // Make sure to get all the tags from the backend before
+  // retrieving the store state.
   useEffect(() => {
     dispatch(getAllTags());
   }, [dispatch])
@@ -17,9 +24,16 @@ const TagEditorList = (props) => {
   const tags = useSelector((state) => state.tags.tags);
   const status = useSelector((state) => state.tags.status);
 
+  /**
+   * Generates a list of TagEditor components.
+   * @param {*} status 
+   * @returns A div representing the status of tag loading, or an
+   * array of TagEditor objects.
+   */
   const generateTagEditorList = (status) => {
     if(status !== null) {
       return <div className="tag-loading-status"> { status } </div>
+
     } else {
 
       if(tags.length > 0) {
@@ -31,11 +45,10 @@ const TagEditorList = (props) => {
             fg={ tag.tag_fg }
             bg={ tag.tag_bg }
             />
-        }) 
+        });
   
         return elements;
       }
-
     }
   }
 

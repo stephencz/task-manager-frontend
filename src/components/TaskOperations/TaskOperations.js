@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-
 import { useSelector, useDispatch } from 'react-redux';
 
 import { 
@@ -21,14 +20,23 @@ import {
 
 import './TaskOperations.css'
 
-
+/**
+ * The TaskOperations component allows the user to add a date to a task,
+ * add and remove tags from a task, or delete the task itself. Each task
+ * has its own instance of this component.
+ * @param {*} props 
+ * @returns 
+ */
 const TaskOperations = (props) => {
 
   const dispatch = useDispatch();
 
+  // Used to toggle the visibility of the add and remove tag menu.
   const [addTagMenuVisible, setAddTagMenuVisible] = useState(false);
   const [removeTagMenuVisible, setRemoveTagMenuVisible] = useState(false);
 
+  // Used to detect clicks outside of the add and remove tag menu
+  // to close them.
   const addTagRef = useRef(null);
   const removeTagRef = useRef(null);
 
@@ -56,7 +64,11 @@ const TaskOperations = (props) => {
   const tags = useSelector((state) => state.tags.tags);
   const task_tags = useSelector((state) => state.task_tags.task_tags)
 
-
+  /**
+   * Gets the inline style object for the tag.
+   * @param {*} tag The Tag Object
+   * @returns 
+   */
   const getColorStyle = (tag) => {
     return {
       color: tag.tag_fg,
@@ -64,6 +76,7 @@ const TaskOperations = (props) => {
     }
   }
 
+  /** Toggles add tag menu visibility */
   const handleAddTagMenuToggle = (event) => {
     if(addTagMenuVisible) {
       setAddTagMenuVisible(false);
@@ -73,6 +86,7 @@ const TaskOperations = (props) => {
     }
   }
 
+  /** Handles adding tags to a task object. */
   const handleAddTag = (element) => {
     dispatch(addTaskTag({ tag_id: element.tag_id, task_id: props.id }));
     dispatch(clearTaskTags());
@@ -83,6 +97,7 @@ const TaskOperations = (props) => {
     setAddTagMenuVisible(false);
   }
 
+  /** Creates the HTML for the add tag menu. */
   const generateAddTagMenu = () => {
     if(addTagMenuVisible) {
 
@@ -135,6 +150,7 @@ const TaskOperations = (props) => {
     }
   }
 
+  /** Toggles the remove tag menu. */
   const handleRemoveTagMenuToggle = (event) => {
     if(removeTagMenuVisible) {
       setRemoveTagMenuVisible(false);
@@ -144,6 +160,7 @@ const TaskOperations = (props) => {
     }
   }
 
+  /** Handles removing a tag from a task. */
   const handleRemoveTag = (element) => {
     const taskTagToRemove = task_tags.find(taskTagObjects => taskTagObjects.tag_id === element.tag_id && taskTagObjects.task_id === props.id);
     dispatch(removeTaskTag({ task_tag_id: taskTagToRemove.task_tag_id }));
@@ -155,6 +172,11 @@ const TaskOperations = (props) => {
     setAddTagMenuVisible(false);
   }
 
+  /**
+   * Generates the HTML for the remove tag menu.
+   * @param {*} event 
+   * @returns 
+   */
   const generateRemoveTagMenu = (event) => {
     if(removeTagMenuVisible) {
 
@@ -205,6 +227,7 @@ const TaskOperations = (props) => {
     }
   }
 
+  /** Toggle task date on and off. */
   const handleDateToggle = (event) => {
 
     if(selected.length > 0) {
@@ -260,6 +283,7 @@ const TaskOperations = (props) => {
     }
   }
 
+  /** Deletes the task matching the id passed via props.id. */
   const handleDeleteTasks = () => {
     if(selected.length > 0){
 

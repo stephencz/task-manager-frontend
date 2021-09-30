@@ -42,19 +42,13 @@ const TaskDate = (props) => {
   }
 
   /**
-   * Gets the HTML for rendering the task's date.
+   * Gets the a DatePicker component matching the passed in props.date.
    * @param {*} props 
-   * @returns HTML containing either a calendar button or a DatePicker component.
+   * @returns DatePicker
    */
   const getTaskDate = (props) => {
 
     if(props.date !== null) {
-    //   // If null display calendar button. When that button is clicked
-    //   // we should create a DatePicker with the current date in it.
-    //   return <div className="calendar-button" ref={ calendarIconRef } onClick={ handleCalendarIconClick }></div>
-
-    // } else {
-      // if not null, display a DatePicker with the stored date in it.
       return <DatePicker 
         selected={ new Date(props.date) }
         onChange={ (date) => handleDateChange(date) }

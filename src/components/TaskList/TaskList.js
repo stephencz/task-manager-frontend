@@ -8,9 +8,9 @@ import Task from '../Task/Task';
 import './TaskList.css';
 
 /**
- * The TaskList component loads all the tasks of a specific
- * user and displays them in a list. Each Task is composed of
- * an optional description, date, and tags, and can be deleted
+ * The TaskList component loads all the tasks and displays them
+ * in a list. Each Task is composed of a description, date, and
+ * tags, and operations.
  */
 const TaskList = (props) => {
    
@@ -18,14 +18,15 @@ const TaskList = (props) => {
   // up to date list of all tasks owned by the user.
   const dispatch = useDispatch();
 
-  // Redux State
-  const tasks = useSelector((state) => state.tasks.tasks);
-  const status = useSelector((state) => state.tasks.status);
-
+  // Dispatching thunks for get data from backend before
+  // using selector to get state from store.
   useEffect(() => {
     dispatch(getAllTaskTags());
     dispatch(getAllTasks());
   }, [dispatch])
+
+  const tasks = useSelector((state) => state.tasks.tasks);
+  const status = useSelector((state) => state.tasks.status);
 
   /**
    * Generates the list of tasks and the status of task retrieval.
@@ -46,9 +47,6 @@ const TaskList = (props) => {
       // task then we map each element returned from the query to a
       // Task component.
       if(tasks.length > 0 && (tasks !== undefined || tasks !== null)) {
-
-        console.log(tasks);               // Confirms tasks is an array
-        console.log(Array.isArray(tasks)) // Confirms tasks is an array
         
         const elements = tasks.map((task) => {
           return <Task 

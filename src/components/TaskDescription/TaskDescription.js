@@ -46,12 +46,10 @@ const TaskDescription = (props) => {
       
     } 
 
+    // Set the task's description and save the change.
     dispatch(setTaskDescription({ id: props.id, description: event.target.textContent }));
     dispatch(addUnsaved({ id: props.id }));
     dispatch(saveTasks());
-  }
-
-  const handleOnChange = (event) => {
   }
 
   /**
@@ -79,7 +77,6 @@ const TaskDescription = (props) => {
         disabled={ false }
         onBlur = { handleBlur }
         onKeyDown = { handleKeyDown }
-        onChange = { handleOnChange }
         />
     </div>
   );

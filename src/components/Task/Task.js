@@ -13,8 +13,8 @@ import './Task.css';
 /**
  * The Task Component represents a task within the Task List.
  * Every Task is composed of a TaskDescription, TaskDate, and
- * TaskTags components. This, respectively, allow each task to
- * have:
+ * TaskTags, and TaskOperations components. This, respectively, 
+ * allow each task to have:
  * 
  *  1. A description describing to the user what the have to do
  *     for a given task.
@@ -23,6 +23,9 @@ import './Task.css';
  * 
  *  3. A collection of tags to help the user classify the task
  *     into a category, project, area, etc.
+ * 
+ *  4. Operation buttons that allow the user to add and remove tags,
+ *     a date, or the task itself.
  *  
  */
 const Task = (props) => {
@@ -34,7 +37,6 @@ const Task = (props) => {
    * @returns String
    */
   const getTaskClassName = () => {
-
     if(selected.includes(props.id)) {
       return 'task selected';
     } 

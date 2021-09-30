@@ -8,8 +8,6 @@ import {
   filterForShowMode
 } from '../../features/tasks';
 
-
-import '../../sort';
 import sortTasks from '../../sort';
 import './TaskSearchSort.css';
 
@@ -41,16 +39,19 @@ const TaskSearchSort = (props) => {
   const task_tags = useSelector((state) => state.task_tags.task_tags)
   const tags = useSelector((state) => state.tags.tags);
 
+  /** Changes the sort mode and re-sorts the tasks. */
   const handleSortChange = (mode) => {
     dispatch(setSortMode(mode))
     sortTasks(dispatch, mode, task_tags, tags)
   }
 
+  /** Changes the show mode and hides or shows the tasks. */
   const handleOnShowChange = (mode) => {
     dispatch(setShowMode(mode))
     dispatch(filterForShowMode({ task_tags: task_tags, tag: tags}))
   }
 
+  /** @returns The HTML for the show mode drop down */
   const generateShowModeHTML = () => {
     return tags.map((x) => {
       console.log(x)

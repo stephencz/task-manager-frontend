@@ -1,6 +1,12 @@
 import React from 'react';
 import './Header.css';
 
+/**
+ * The Header displaying the name of the application at
+ * the top of the page.
+ * @param {*} props 
+ * @returns 
+ */
 const Header = (props) => {
 
   return (

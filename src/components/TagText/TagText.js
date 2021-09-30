@@ -11,7 +11,13 @@ import ContentEditable from 'react-contenteditable';
 
 import './TagText.css';
 
-
+/**
+ * The TagText component represents the text that a tag displays
+ * inside of itself.
+ * 
+ * @param {*} props 
+ * @returns 
+ */
 const TagText = (props) => {
 
   // Real DOM references required by react-contenteditable
@@ -19,6 +25,10 @@ const TagText = (props) => {
 
   const dispatch = useDispatch();
 
+  /**
+   * Gets the correct tag text based on what is passed to props.text.
+   * @returns A String containing the correct tag text.
+   */
   const getTagText = () => {
     if(props.text === null || props.text === "") {
       dispatch(setTagText({ id: props.id, text: 'Empty Tag' }));
@@ -26,6 +36,7 @@ const TagText = (props) => {
 
     } else {
       return props.text;
+
     }
   }
 
@@ -58,8 +69,13 @@ const TagText = (props) => {
     dispatch(saveTags())
   }
 
+  /**
+   * Updates the tag's text as it is changed within the react-contenteditable
+   * component.
+   * @param {*} event 
+   */
   const handleChange = (event) => {
-    dispatch(setTagText({ id: props.id, text: event.target.value }))
+    dispatch(setTagText({ id: props.id, text: event.target.value }));
   }
 
   return (

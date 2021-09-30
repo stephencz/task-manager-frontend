@@ -5,10 +5,16 @@ import { setSelected, addSelected, removeSelected, clearSelected } from '../../f
 
 import './TagHandle.css';
 
+/**
+ * The TagHandle component represents a selectable handle. Upon being
+ * clicked this handle will 'select' the tag so that it can removed or
+ * have some other operation applied to it.
+ * @param {*} props 
+ * @returns 
+ */
 const TagHandle = (props) => {
 
   const dispatch = useDispatch();
-
   const selected = useSelector(state => state.tags.selected);
 
   /**
@@ -17,6 +23,8 @@ const TagHandle = (props) => {
    */
   const handleTagSelection = (event) => {
 
+    // Handles tag selection to enable multi tag selection,
+    // removing a tag from selection, and clearing selection.
     if(!selected.includes(props.id)) {
       if(event.shiftKey) {
         dispatch(addSelected({ id: props.id }));
@@ -34,15 +42,9 @@ const TagHandle = (props) => {
 
       }
     }
-
   }
 
-  return (
-    <div className="tag-editor-handle" onClick={ handleTagSelection }>
-
-    </div>
-  );
-
+  return ( <div className="tag-editor-handle" onClick={ handleTagSelection }></div> );
 }
 
 export default TagHandle;

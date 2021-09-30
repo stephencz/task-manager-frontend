@@ -4,10 +4,17 @@ import { setSelected, addSelected, removeSelected, clearSelected } from '../../f
 
 import './TaskHandle.css';
 
+/**
+ * The TaskHandle component represents a selectable handle
+ * used to manage selection of individual, or multiple, Task
+ * components.
+ * 
+ * @param {*} props 
+ * @returns 
+ */
 const TaskHandle = (props) => {
 
   const dispatch = useDispatch();
-
   const selected = useSelector(state => state.tasks.selected);
 
   /**
@@ -16,6 +23,8 @@ const TaskHandle = (props) => {
    */
   const handleTaskSelection = (event) => {
 
+    // logic for proper single selection, multi selection,
+    // removal from selection, and selection clearing.
     if(!selected.includes(props.id)) {
       if(event.shiftKey) {
         dispatch(addSelected({ id: props.id }));
@@ -36,14 +45,8 @@ const TaskHandle = (props) => {
 
   }
 
+  return ( <div className="task-handle" onClick={ handleTaskSelection } ></div> );
   
-  
-  return (
-    <div className="task-handle" onClick={ handleTaskSelection } >
-
-    </div>
-  );
-
 }
 
 export default TaskHandle;

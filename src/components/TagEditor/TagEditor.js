@@ -1,5 +1,4 @@
 import React from 'react';
-
 import { useSelector } from 'react-redux';
 
 import TagHandle from '../TagHandle/TagHandle';
@@ -9,12 +8,20 @@ import TagDisplay from '../TagDisplay/TagDisplay';
 
 import './TagEditor.css';
 
+/**
+ * The TagEditor component represents the editable attributes of
+ * a Tag object. This includes a TagHandle for selection, TagText,
+ * TagColors for foreground and background colors, and a TagDisplay
+ * for representing the final tag.
+ * @param {*} props 
+ * @returns 
+ */
 const TagEditor = (props) => {
 
   const selected = useSelector(state => state.tags.selected);
 
   /**
-   * Determines the correct class name for the Task.
+   * Determines the correct class name for the Tag.
    * @returns String
    */
   const getTagClassName = () => {

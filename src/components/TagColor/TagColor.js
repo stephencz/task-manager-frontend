@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
-
 import { useDispatch } from 'react-redux';
+
 import { 
   setForegroundColor,
   setBackgroundColor,
@@ -11,6 +11,16 @@ import {
 import ContentEditable from 'react-contenteditable';
 import './TagColor.css';
 
+/**
+ * The TagColor component represents foreground or background
+ * color selection for a Tag. The Tag expects the following props:
+ * 
+ *  id - The id of the Tag
+ *  initialColor - The starting foreground or background color.
+ *  isFG - True when foreground. False when background.
+ * @param {*} props 
+ * @returns 
+ */
 const TagColor = (props) => {
 
   // Real DOM references required by react-contenteditable
@@ -41,6 +51,7 @@ const TagColor = (props) => {
   const handleBlur = (event) => { 
     const content = event.target.textContent.trim();
 
+    // Makes sure that the color only updates when it is valid.
     if(content.charAt(0) === '#') {
       if(content.length === 4 || content.length === 7) {
         if(props.isFG) {
@@ -50,16 +61,22 @@ const TagColor = (props) => {
           dispatch(setBackgroundColor({ id: props.id, color: event.target.textContent }));
         }
 
+        // Save changes to the tag.
         dispatch(addUnsaved({ id: props.id }))
         dispatch(saveTags());
       }
     } 
   }
 
+  /**
+   * Updates changes to the tag foreground or background on changes to the
+   * react-contenteditable component.
+   * @param {*} event 
+   */
   const handleChange = (event) => {
-    console.log(event.target);
     let content = event.target.value.trim();
 
+    // Makes sure that the color only updates when it is valid.
     if(content.charAt(0) === '#') {
       if(content.length === 4 || content.length === 7) {
         if(props.isFG) {
@@ -72,6 +89,7 @@ const TagColor = (props) => {
     } 
   }
 
+  /** @return The hex code representing the tag's current color. */
   const getTagColorText = () => {
     return props.initialColor;
   }

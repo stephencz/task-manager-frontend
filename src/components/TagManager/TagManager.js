@@ -5,6 +5,15 @@ import TagEditorList from '../TagEditorList/TagEditorList';
 
 import './TagManager.css';
 
+/**
+ * The TagManager component represents a combination of a
+ * TagOperations component, for adding and removing tags, and
+ * a TagEditorList component for displaying all the TagEditors
+ * for all existing tags.
+ * 
+ * @param {*} props 
+ * @returns 
+ */
 const TagManager = (props) => {
 
   return (
