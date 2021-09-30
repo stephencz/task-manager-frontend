@@ -19,6 +19,7 @@ export const getAllTasks =
     return response.data;
   });
 
+/** Saves tasks with IDs in the unsaved array. */
 export const saveTasks = 
   createAsyncThunk('tasks/saveTasks', async (dispatch, thunkAPI) => {
 
@@ -49,7 +50,7 @@ export const deleteSelectedTasks =
   });
 
 /**
- * 
+ * Sorts tasks by their date from oldest to newest.
  * @param {*} tasks 
  */
 const sortByDate = (tasks) => {
@@ -69,7 +70,7 @@ const sortByDate = (tasks) => {
 }
 
 /**
- * 
+ * Sorts tasks alphabetically by tag
  * @param {*} tasks 
  * @param {*} task_tags 
  * @param {*} tags 
@@ -109,7 +110,7 @@ const sortAlphabeticallyByTag = (tasks, task_tags, tags) => {
       // Get tag objects matching a's task_tags
       let a_text = tags.filter((x) => {
         if(a_tags[0].tag_id === x.tag_id) {
-          return x.tag_text
+          return x
         }
 
         return false;
@@ -118,15 +119,18 @@ const sortAlphabeticallyByTag = (tasks, task_tags, tags) => {
       // Get tag objects matching b's task_tags
       let b_text = tags.filter((x) => {
         if(b_tags[0].tag_id === x.tag_id) {
-          return x.tag_text
+          return x
         }
 
         return false;
       });
 
       // Sort on text.
-      if(a_text[0].tag_text < b_text[0].tag_text) return -1;
-      if(a_text[0].tag_text > b_text[0].tag_text) return 1;
+      let a_lower = a_text[0].tag_text.toLowerCase();
+      let b_lower = b_text[0].tag_text.toLowerCase();
+
+      if(a_lower < b_lower) return -1;
+      if(a_lower > b_lower) return 1;
 
       return 0;
     }
@@ -142,9 +146,12 @@ const sortAlphabeticallyByTag = (tasks, task_tags, tags) => {
  */
 const sortAlphabeticallyByDescription = (tasks) => {
   return tasks.sort((a, b) => {
-    // Sort on text.
-    if(a.task_description < b.task_description) return -1;
-    if(a.task_description > b.task_description) return 1;
+
+    let a_lower = a.task_description.toLowerCase()
+    let b_lower = b.task_description.toLowerCase()
+
+    if(a_lower < b_lower) return -1;
+    if(a_lower > b_lower) return 1;
 
     return 0;
   });
@@ -353,7 +360,6 @@ export const tasksSlice = createSlice({
     },
 
     sortTasksByDescription(state, action) {
-      //Set tasks to combined array
       state.tasks = sortAlphabeticallyByDescription(state.tasks);
     },
 

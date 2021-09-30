@@ -41,6 +41,10 @@ const TaskDate = (props) => {
     
   }
 
+  const getDateColorStyle = () => {
+    
+  }
+
   /**
    * Gets the a DatePicker component matching the passed in props.date.
    * @param {*} props 

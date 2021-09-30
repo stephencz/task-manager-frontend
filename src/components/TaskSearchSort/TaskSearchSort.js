@@ -54,7 +54,6 @@ const TaskSearchSort = (props) => {
   /** @returns The HTML for the show mode drop down */
   const generateShowModeHTML = () => {
     return tags.map((x) => {
-      console.log(x)
       return (
         <option 
           key={x.tag_id} 
