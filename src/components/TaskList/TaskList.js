@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+
 import { getAllTasks } from '../../features/tasks';
 import { getAllTaskTags } from '../../features/task_tags';
-import sortTasks from '../../sort';
 
 import Task from '../Task/Task';
 import './TaskList.css';
@@ -20,7 +20,6 @@ const TaskList = (props) => {
 
   // Redux State
   const tasks = useSelector((state) => state.tasks.tasks);
-  const task_tags = useSelector((state) => state.task_tags.task_tags);
   const status = useSelector((state) => state.tasks.status);
 
   useEffect(() => {
@@ -46,22 +45,26 @@ const TaskList = (props) => {
       // If we successfully run the query and get back at least one
       // task then we map each element returned from the query to a
       // Task component.
-      if(tasks.length > 0) {
+      if(tasks.length > 0 && (tasks !== undefined || tasks !== null)) {
+
+        console.log(tasks);               // Confirms tasks is an array
+        console.log(Array.isArray(tasks)) // Confirms tasks is an array
+        
         const elements = tasks.map((task) => {
           return <Task 
-            key={ task['task_id'] }
-            id={ task['task_id'] }
-            description={ task['task_description'] } 
-            date={ task['task_date'] } 
+            key={ task.task_id }
+            id={ task.task_id }
+            description={ task.task_description } 
+            date={ task.task_date } 
             tags={ task.tags } 
             />
         }) 
   
         return elements;
       }
-      
-      return <div className="task-loading-status">You have no tasks yet.</div>
     }
+      
+    return <div className="task-loading-status">You have no tasks yet.</div>
   }
 
   return(

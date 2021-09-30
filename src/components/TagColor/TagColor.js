@@ -76,14 +76,6 @@ const TagColor = (props) => {
     return props.initialColor;
   }
 
-  const getSpanText = () => {
-    if(props.isFG) {
-      return <span>Foreground: </span>
-    }
-
-    return <span>Background: </span>
-  }
-
   return (
     <div className="tag-editor-color">
       <ContentEditable

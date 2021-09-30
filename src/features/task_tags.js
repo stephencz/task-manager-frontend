@@ -1,18 +1,21 @@
+import env from "react-dotenv";
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+const PROXY = env.PROXY;
+
 export const getAllTaskTags =
   createAsyncThunk('taskTags/getAllTaskTags', async (dispatch, thunkAPI) => {
-    const response = await axios.get('/api/v1/task_tags/get/all')
+    const response = await axios.get(PROXY + '/api/v1/task_tags/get/all')
     return response.data
   });
 
 export const saveTaskTags =
   createAsyncThunk('taskTags/saveTaskTag', async (dispatch, thunkAPI) => {
     const taskTagsToAdd = thunkAPI.getState().task_tags.add;
-    const postResponse = await axios.post('/api/v1/task_tags/save', taskTagsToAdd);
+    const postResponse = await axios.post(PROXY + '/api/v1/task_tags/save', taskTagsToAdd);
     if(postResponse.status === 200) {
-      const getResponse = await axios.get('/api/v1/task_tags/get/all')
+      const getResponse = await axios.get(PROXY + '/api/v1/task_tags/get/all')
       return getResponse.data
     }
 
@@ -22,14 +25,14 @@ export const saveTaskTags =
 export const deleteTaskTags =
   createAsyncThunk('taskTags/deleteTaskTag', async (dispatch, thunkAPI) => {
     const taskTagsToRemove = thunkAPI.getState().task_tags.remove
-    const deleteResponse = await axios.delete('/api/v1/task_tags/delete', {
+    const deleteResponse = await axios.delete(PROXY + '/api/v1/task_tags/delete', {
       params: {
         remove: taskTagsToRemove
       }
     })
 
     if(deleteResponse.status === 200) {
-      const getResponse = await axios.get('/api/v1/task_tags/get/all')
+      const getResponse = await axios.get(PROXY + '/api/v1/task_tags/get/all')
       return getResponse.data;
     }
 

@@ -1,10 +1,11 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import tasks, {
+import {
   createNewEmptyTask,
   setSortMode,
-  sortTasksByDefault
+  setShowMode,
+  filterForShowMode
 } from '../../features/tasks';
 
 
@@ -39,11 +40,30 @@ const TaskSearchSort = (props) => {
 
   const task_tags = useSelector((state) => state.task_tags.task_tags)
   const tags = useSelector((state) => state.tags.tags);
-  const sortMode = useSelector((state) => state.tasks.sort_mode)
 
   const handleSortChange = (mode) => {
     dispatch(setSortMode(mode))
     sortTasks(dispatch, mode, task_tags, tags)
+  }
+
+  const handleOnShowChange = (mode) => {
+    dispatch(setShowMode(mode))
+    dispatch(filterForShowMode({ task_tags: task_tags, tag: tags}))
+  }
+
+  const generateShowModeHTML = () => {
+    return tags.map((x) => {
+      console.log(x)
+      return (
+        <option 
+          key={x.tag_id} 
+          value={ x.tag_id } 
+          onClick={ () => handleOnShowChange(x.tag_id) }
+        >
+          { x.tag_text }
+        </option>
+      );
+    })
   }
 
   return (
@@ -58,7 +78,8 @@ const TaskSearchSort = (props) => {
         </select>
 
         <select className="show-only">
-          <option value=""></option>
+          <option value="all" onClick={ () => handleOnShowChange('all') }>Show All</option>
+          { generateShowModeHTML() }
         </select>
         
         <button

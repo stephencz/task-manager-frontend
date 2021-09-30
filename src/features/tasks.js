@@ -1,18 +1,24 @@
+import env from "react-dotenv";
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+
+console.log(env)
+const PROXY = env.PROXY;
+
+console.log(PROXY)
 
 /** Creates a new empty task and adds it to the database. */
 export const createNewEmptyTask = 
   createAsyncThunk('tasks/createNewEmptyTask', async (dispatch, thunkAPI) => {    
-    await axios.post('/api/v1/tasks/new');
-    const response = await axios.get('/api/v1/tasks/get/latest')
+    await axios.post(PROXY + '/api/v1/tasks/new');
+    const response = await axios.get(PROXY + '/api/v1/tasks/get/latest')
     return response.data[0];
   });
 
 /** Returns a JSON Array of all Tasks. */
 export const getAllTasks = 
   createAsyncThunk('tasks/getAllTasks', async (dispatch, thunkAPI) => {
-    const response = await axios.get('/api/v1/tasks/get/all');
+    const response = await axios.get(PROXY + '/api/v1/tasks/get/all');
     return response.data;
   });
 
@@ -25,7 +31,7 @@ export const saveTasks =
       return unsaved_ids.includes(element.task_id) 
     });
 
-    const response = await axios.post('/api/v1/tasks/save', unsaved_tasks);
+    const response = await axios.post(PROXY + '/api/v1/tasks/save', unsaved_tasks);
     return response;
   });
 
@@ -34,7 +40,7 @@ export const deleteSelectedTasks =
   createAsyncThunk('tasks/deleteSelectedTasks', async (dispatch, thunkAPI) => {
     const state = thunkAPI.getState();
     if(state.tasks.selected.length > 0) {
-      const response = await axios.delete('/api/v1/tasks/delete/selected', {
+      const response = await axios.delete(PROXY + '/api/v1/tasks/delete/selected', {
         params: {
           selected: state.tasks.selected
         }
@@ -44,14 +50,6 @@ export const deleteSelectedTasks =
       return response;
     }
   });
-
-const doesTaskHaveTags = (task, task_tags) => {
-  const result = task_tags.filter((x) => {
-    return task.task_id === x.task_id;
-  });
-
-  return result.length > 0 ? true : false;
-}
 
 /**
  * 
@@ -353,17 +351,30 @@ export const tasksSlice = createSlice({
 
       let task_tags = action.payload.task_tags;
       let tags = action.payload.tags;
-
-      let temp = state.tasks
-
-      sortAlphabeticallyByTag(temp, task_tags, tags);
   
-      state.tasks = temp;
+      state.tasks = sortAlphabeticallyByTag(state.tasks, task_tags, tags);
     },
 
     sortTasksByDescription(state, action) {
       //Set tasks to combined array
       state.tasks = sortAlphabeticallyByDescription(state.tasks);
+    },
+
+    filterForShowMode(state, action){
+      let mode = state.show_mode
+      if(mode === "all") {
+        state.tasks.forEach((x) => {
+          x.show = true;
+        });
+      } else {
+
+        // If task contains the tag we want to show in show_mode
+        // then set its show to true. Otherwise set its show to false.
+
+
+        
+
+      }
     }
   },
 
@@ -431,6 +442,7 @@ export const {
   sortTasksByDescription,
   sortTasksByTag,
 
+  filterForShowMode
 
 } = tasksSlice.actions;
 
