@@ -364,7 +364,17 @@ export const tasksSlice = createSlice({
       state.tasks = sortAlphabeticallyByDescription(state.tasks);
     },
 
-    filterForShowMode(state, action){
+    filterForSearch(state, action) {
+      state.tasks = state.tasks.map((x) => {
+        if(x.task_description.includes(action.payload.text)) {
+          return {...x, hidden: false}
+        } else {
+          return {...x, hidden: true}
+        }
+      })
+    },
+
+    filterForShowMode(state, action) {
 
       let mode = action.payload.mode;
       let task_tags = action.payload.task_tags;
@@ -458,6 +468,7 @@ export const {
   sortTasksByDescription,
   sortTasksByTag,
 
+  filterForSearch,
   filterForShowMode
 
 } = tasksSlice.actions;

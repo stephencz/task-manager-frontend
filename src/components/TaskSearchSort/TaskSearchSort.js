@@ -5,6 +5,7 @@ import {
   createNewEmptyTask,
   setSortMode,
   setShowMode,
+  filterForSearch,
   filterForShowMode
 } from '../../features/tasks';
 
@@ -39,9 +40,12 @@ const TaskSearchSort = (props) => {
   const task_tags = useSelector((state) => state.task_tags.task_tags)
   const tags = useSelector((state) => state.tags.tags);
 
+  const handleSearchChange = (event) => {
+    dispatch(filterForSearch({ text: event.target.value }))    
+  }
+
   /** Changes the sort mode and re-sorts the tasks. */
   const handleSortChange = (event) => {
-    console.log(event.target.value);
     let value = event.target.value;
     if(value === 'default' || value === 'description' || value === 'date' || value === 'tag') {
       dispatch(setSortMode(event.target.value))
@@ -77,7 +81,7 @@ const TaskSearchSort = (props) => {
   return (
     <div className="">
       <div className="task-search-sort">
-        <input className="search" placeholder="Search"></input>
+        <input className="search" placeholder="Search" onChange={ (event) => handleSearchChange(event) }></input>
         <select className="all-sort" onChange={ (event) => handleSortChange(event) }>
           <option value="default">Default</option>
           <option value="description">Sort by Description</option>
