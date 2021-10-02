@@ -41,26 +41,6 @@ const TaskDate = (props) => {
     
   }
 
-  const getDateColorClass = () => {
-    if(props.date !== null) {
-      let date = new Date(props.date);
-      let hour = 1000 * 60 * 60;
-      let twentyFourHour = hour * 24;
-
-
-      if(date >= Date.now() - hour && date <= Date.now() + twentyFourHour) {
-        return "task-date-is-soon"
-      }
-
-      if(date < Date.now()) {
-        return "task-date-is-late";
-      }
-
-
-      return "";
-    }
-  }
-
   /**
    * Gets the a DatePicker component matching the passed in props.date.
    * @param {*} props 
@@ -70,7 +50,6 @@ const TaskDate = (props) => {
 
     if(props.date !== null) {
       return <DatePicker 
-        className={ getDateColorClass() }
         selected={ new Date(props.date) }
         onChange={ (date) => handleDateChange(date) }
         />

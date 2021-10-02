@@ -19,7 +19,8 @@
   margin-right: 10px;
 }
 
-.task-search-sort select.all-sort
+.task-search-sort select.all-sort,
+.task-search-sort select.show-only
 {
   border: 1px solid #cacaca;
   border-radius: 5px;
