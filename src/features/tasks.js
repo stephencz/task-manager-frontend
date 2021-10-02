@@ -157,6 +157,7 @@ const sortAlphabeticallyByDescription = (tasks) => {
   });
 }
 
+
 export const tasksSlice = createSlice({
   name: 'tasks',
   
@@ -324,7 +325,7 @@ export const tasksSlice = createSlice({
     },
 
     setShowMode(state, action) {
-      state.sort_mode = action.payload;
+      state.show_mode = action.payload;
     },
 
     sortTasksByDefault(state, action) {
@@ -364,19 +365,31 @@ export const tasksSlice = createSlice({
     },
 
     filterForShowMode(state, action){
-      let mode = state.show_mode
-      if(mode === "all") {
-        state.tasks.forEach((x) => {
-          x.show = true;
+
+      let mode = action.payload.mode;
+      let task_tags = action.payload.task_tags;
+      let tags = action.payload.task_tags;
+
+      console.log(mode);
+      if(mode == -1) {
+        state.tasks = state.tasks.map((x) => {
+          return { ...x, hidden: false };
         });
       } else {
 
-        // If task contains the tag we want to show in show_mode
-        // then set its show to true. Otherwise set its show to false.
+        state.tasks = state.tasks.map((i) => {
+          let ids = task_tags.filter((j) => {
 
+            return j.tag_id == mode && i.task_id == j.task_id;
+          })
 
+          if(ids.length > 0) {
+            return {...i, hidden: false };
+          } else {
+            return {...i, hidden: true };
+          }
+        })
         
-
       }
     }
   },

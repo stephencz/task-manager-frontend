@@ -49,13 +49,27 @@ const TaskList = (props) => {
       if(tasks.length > 0 && (tasks !== undefined || tasks !== null)) {
         
         const elements = tasks.map((task) => {
-          return <Task 
-            key={ task.task_id }
-            id={ task.task_id }
-            description={ task.task_description } 
-            date={ task.task_date } 
-            tags={ task.tags } 
+          if('hidden' in task && task.hidden === false) {
+            return <Task 
+              key={ task.task_id }
+              id={ task.task_id }
+              description={ task.task_description } 
+              date={ task.task_date } 
+              tags={ task.tags } 
             />
+          } 
+
+          if(!('hidden' in task)) {
+            return <Task 
+              key={ task.task_id }
+              id={ task.task_id }
+              description={ task.task_description } 
+              date={ task.task_date } 
+              tags={ task.tags } 
+            />
+          }
+          
+          return null;
         }) 
   
         return elements;

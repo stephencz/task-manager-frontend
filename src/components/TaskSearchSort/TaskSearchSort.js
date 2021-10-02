@@ -40,15 +40,24 @@ const TaskSearchSort = (props) => {
   const tags = useSelector((state) => state.tags.tags);
 
   /** Changes the sort mode and re-sorts the tasks. */
-  const handleSortChange = (mode) => {
-    dispatch(setSortMode(mode))
-    sortTasks(dispatch, mode, task_tags, tags)
+  const handleSortChange = (event) => {
+    console.log(event.target.value);
+    let value = event.target.value;
+    if(value === 'default' || value === 'description' || value === 'date' || value === 'tag') {
+      dispatch(setSortMode(event.target.value))
+      sortTasks(dispatch, event.target.value, task_tags, tags)
+    }
   }
 
   /** Changes the show mode and hides or shows the tasks. */
-  const handleOnShowChange = (mode) => {
-    dispatch(setShowMode(mode))
-    dispatch(filterForShowMode({ task_tags: task_tags, tag: tags}))
+  const handleOnShowChange = (event) => {
+    if(event.target.value === 'all') {
+      dispatch(setShowMode(-1))
+      dispatch(filterForShowMode({ mode: -1, task_tags: task_tags, tag: tags}))
+    } else {
+      dispatch(setShowMode(event.target.value))
+      dispatch(filterForShowMode({ mode: event.target.value, task_tags: task_tags, tag: tags}))
+    }
   }
 
   /** @returns The HTML for the show mode drop down */
@@ -58,7 +67,6 @@ const TaskSearchSort = (props) => {
         <option 
           key={x.tag_id} 
           value={ x.tag_id } 
-          onClick={ () => handleOnShowChange(x.tag_id) }
         >
           { x.tag_text }
         </option>
@@ -70,15 +78,15 @@ const TaskSearchSort = (props) => {
     <div className="">
       <div className="task-search-sort">
         <input className="search" placeholder="Search"></input>
-        <select className="all-sort">
-          <option value="default" onClick={ () => handleSortChange('default') }>Default</option>
-          <option value="sort-by-description" onClick={ () => handleSortChange('description') }>Sort by Description</option>
-          <option value="sort-by-date" onClick={ () => handleSortChange('date') }>Sort by Date</option>
-          <option value="sory-by-tag" onClick={ () => handleSortChange('tag') }>Sort by Tag</option>
+        <select className="all-sort" onChange={ (event) => handleSortChange(event) }>
+          <option value="default">Default</option>
+          <option value="description">Sort by Description</option>
+          <option value="date">Sort by Date</option>
+          <option value="tag">Sort by Tag</option>
         </select>
 
-        <select className="show-only">
-          <option value="all" onClick={ () => handleOnShowChange('all') }>Show All</option>
+        <select className="show-only" onChange={ (event) => handleOnShowChange(event) }>
+          <option value="all">Show All</option>
           { generateShowModeHTML() }
         </select>
         

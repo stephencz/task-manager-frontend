@@ -38,3 +38,17 @@
   -webkit-appearance: none;
 }
 
+
+.react-datepicker__input-container input.task-date-is-late
+{
+  color: #f2f2f2;
+  background-color: #b30000;
+  border: 1px solid #a40000;
+}
+
+.react-datepicker__input-container input.task-date-is-soon
+{
+  color: #000;
+  background-color: #f4c60f;
+  border: 1px solid #d9ad2a;
+}

@@ -5,8 +5,6 @@ import {
 } from './features/tasks';
 
 const sortTasks = (dispatch, mode, task_tags, tags) => {
-  console.log(mode)
-
   if(mode === 'default' || mode === 'date') {
     dispatch(sortTasksByDefault({task_tags: task_tags, tags: tags }));
   }
