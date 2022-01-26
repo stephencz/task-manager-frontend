@@ -26,7 +26,7 @@ const TagHandle = (props) => {
     // Handles tag selection to enable multi tag selection,
     // removing a tag from selection, and clearing selection.
     if(!selected.includes(props.id)) {
-      if(event.shiftKey) {
+      if(event.shiftKey || event.ctrlKey) {
         dispatch(addSelected({ id: props.id }));
 
       } else {

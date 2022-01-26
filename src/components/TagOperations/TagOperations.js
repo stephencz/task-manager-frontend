@@ -1,10 +1,12 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import {
   createNewTag, 
   deleteSelectedTags
 } from '../../features/tags';
+
+import { clearTaskTagsForTagIDs } from '../../features/task_tags';
 
 import './TagOperations.css';
 
@@ -19,11 +21,17 @@ import './TagOperations.css';
 const TagOperations = (props) => {
   
   const dispatch = useDispatch();
+  const selectedTags = useSelector((state) => state.tags.selected);
+
+  const handleTagDeletion = () => {
+    dispatch(clearTaskTagsForTagIDs({ selected_tags: selectedTags }));
+    dispatch(deleteSelectedTags());
+  }
 
   return (
     <div className="tag-operations">
       <button className="add-tag" onClick={ () => dispatch(createNewTag()) }>Add Tag</button>
-      <button className="remove-tag" onClick={ () => dispatch(deleteSelectedTags()) }>Remove Tag</button>
+      <button className="remove-tag" onClick={ handleTagDeletion }>Remove Tag</button>
     </div>
   );
 

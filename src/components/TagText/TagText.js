@@ -3,8 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { 
   setTagText,
-  addUnsaved,
-  saveTags
+  addUnsaved
 } from '../../features/tags';
 
 import ContentEditable from 'react-contenteditable';
@@ -66,7 +65,6 @@ const TagText = (props) => {
 
     dispatch(setTagText({ id: props.id, text: event.target.textContent }));
     dispatch(addUnsaved({ id: props.id }));
-    dispatch(saveTags())
   }
 
   /**

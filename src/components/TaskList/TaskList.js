@@ -1,8 +1,5 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-
-import { getAllTasks } from '../../features/tasks';
-import { getAllTaskTags } from '../../features/task_tags';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 import Task from '../Task/Task';
 import './TaskList.css';
@@ -14,17 +11,6 @@ import './TaskList.css';
  */
 const TaskList = (props) => {
    
-  // Dispatches the getTasks thunk to retrieve an
-  // up to date list of all tasks owned by the user.
-  const dispatch = useDispatch();
-
-  // Dispatching thunks for get data from backend before
-  // using selector to get state from store.
-  useEffect(() => {
-    dispatch(getAllTaskTags());
-    dispatch(getAllTasks());
-  }, [dispatch])
-
   const tasks = useSelector((state) => state.tasks.tasks);
   const status = useSelector((state) => state.tasks.status);
 

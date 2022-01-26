@@ -5,8 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import {
   setTaskDate,
-  addUnsaved, 
-  saveTasks
+  addUnsaved
   } from '../../features/tasks';
 
 import './TaskDate.css';
@@ -36,7 +35,6 @@ const TaskDate = (props) => {
         newDate: date.toISOString()
       }));
       dispatch(addUnsaved({ id: props.id }));
-      dispatch(saveTasks());
     }
     
   }

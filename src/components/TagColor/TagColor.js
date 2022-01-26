@@ -4,8 +4,7 @@ import { useDispatch } from 'react-redux';
 import { 
   setForegroundColor,
   setBackgroundColor,
-  addUnsaved,
-  saveTags
+  addUnsaved
  } from '../../features/tags';
 
 import ContentEditable from 'react-contenteditable';
@@ -62,8 +61,7 @@ const TagColor = (props) => {
         }
 
         // Save changes to the tag.
-        dispatch(addUnsaved({ id: props.id }))
-        dispatch(saveTags());
+        dispatch(addUnsaved({ id: props.id }));
       }
     } 
   }

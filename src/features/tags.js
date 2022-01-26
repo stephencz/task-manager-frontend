@@ -1,48 +1,25 @@
-import env from "react-dotenv";
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice } from '@reduxjs/toolkit';
 
-const PROXY = env.PROXY;
 
-export const createNewTag =
-  createAsyncThunk('tags/createNewTag', async (dispatch, thunkAPI) => {
-    await axios.post(PROXY + '/api/v1/tags/new');
-    const response = await axios.get(PROXY + '/api/v1/tags/get/latest')
-    return response.data[0];
-  });
+/**
+ * FOR THE FRONTEND DEMO ONLY: Generates the next task id.
+ * @param {*} tasks The array of tasks.
+ * @returns integer
+ */
+ const getNextTagID = (tags) => {
+  if(tags.length <= 0) {
+    return 1;
+  } else {
+    let max = 0;
+    tags.forEach(tag => {
+      if(tag.tag_id > max) {
+        max = tag.tag_id
+      }
+    })
 
-export const getAllTags =
-  createAsyncThunk('tags/getAllTags', async (dispatch, thunkAPI) => {
-    const response = await axios.get(PROXY + '/api/v1/tags/get/all');
-    return response.data;
-  });
-
-export const saveTags =
-  createAsyncThunk('tags/saveTags', async (dispatch, thunkAPI) => {
-    const tags = thunkAPI.getState().tags.tags;
-    const unsaved_ids = thunkAPI.getState().tags.unsaved;
-    const unsaved_tags = tags.filter((element) => { 
-      return unsaved_ids.includes(element.tag_id) 
-    });
-
-    const response = await axios.post(PROXY + '/api/v1/tags/save', unsaved_tags);
-    return response;
-  });
-
-/** Deletes all tasks that are currently selected */
-export const deleteSelectedTags =
-  createAsyncThunk('tags/deleteSelectedTags', async (dispatch, thunkAPI) => {
-    const state = thunkAPI.getState();
-    if(state.tags.selected.length > 0) {
-      const response = await axios.delete(PROXY + '/api/v1/tags/delete/selected', {
-        params: {
-          selected: state.tags.selected
-        }
-      });
-
-      return response;
-    }
-  });
+    return max + 1;
+  }
+}
 
 export const tagsSlice = createSlice({
   name: 'tags',
@@ -55,6 +32,18 @@ export const tagsSlice = createSlice({
   },
   
   reducers: {
+    createNewTag(state, action) {
+      state.tags = [...state.tags, {
+        tag_id: getNextTagID(state.tags),
+        tag_text: "Empty Tag",
+        tag_fg: "#ffffff",
+        tag_bg: "#000000"
+      }];
+    },
+    deleteSelectedTags(state, action) {
+      state.tags = state.tags.filter(value => state.selected.includes(value.tag_id) !== true);
+      state.selected = [];
+    },
     setTagText(state, action) {
       state.tags = state.tags.map((tag, index) => {
         if(tag.tag_id !== action.payload.id) {
@@ -101,35 +90,30 @@ export const tagsSlice = createSlice({
     },
     clearUnsaved(state, action) {
       state.unsaved = [];
-    }
-  },
-  extraReducers: {
-    [getAllTags.pending]: (state, action) => {
-      state.status = "Loading tags";
     },
-
-    [getAllTags.fulfilled]: (state, action) => {
-      state.tags = action.payload;
-      state.status = null;
-    },
-
-    [getAllTags.rejected]: (state, action) => {
-      state.status = "Failed to load tags!";
-    },
-    [createNewTag.fulfilled]: (state, action) => {
-      state.tags = [action.payload, ...state.tags];
-    },
-    [deleteSelectedTags.fulfilled]: (state, action) => {
-      state.tags = state.tags.filter( value => state.selected.includes(value.tag_id) !== true)
-      state.selected = []
-    },
-    [saveTags.fulfilled]: (state, action) => {
-      state.unsaved = []
+    addDemoTags(state, action) {
+      state.tags = [
+        {
+          tag_id: 1,
+          tag_text: "Introduction",
+          tag_fg: "#fff",
+          tag_bg: "#56b4fc"
+        },
+        {
+          tag_id: 2,
+          tag_text: "Instructions",
+          tag_fg: "#fff",
+          tag_bg: "#de7214"
+        }
+      ]
     }
   }
 })
 
 export const { 
+  createNewTag,
+  deleteSelectedTags,
+
   setTagText,
   setForegroundColor,
   setBackgroundColor,
@@ -140,7 +124,9 @@ export const {
   clearSelected,
 
   addUnsaved,
-  clearUnsaved
+  clearUnsaved,
+
+  addDemoTags
 } = tagsSlice.actions;
 
 export default tagsSlice.reducer;

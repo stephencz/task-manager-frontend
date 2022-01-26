@@ -1,6 +1,5 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { getAllTags } from '../../features/tags';
+import React from 'react';
+import { useSelector } from 'react-redux';
 
 import TagEditor from '../TagEditor/TagEditor';
 import './TagEditorList.css';
@@ -12,14 +11,6 @@ import './TagEditorList.css';
  * @returns 
  */
 const TagEditorList = (props) => {
-
-  const dispatch = useDispatch();
-
-  // Make sure to get all the tags from the backend before
-  // retrieving the store state.
-  useEffect(() => {
-    dispatch(getAllTags());
-  }, [dispatch])
 
   const tags = useSelector((state) => state.tags.tags);
   const status = useSelector((state) => state.tags.status);

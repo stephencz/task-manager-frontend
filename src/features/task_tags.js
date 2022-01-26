@@ -1,43 +1,4 @@
-import env from "react-dotenv";
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-const PROXY = env.PROXY;
-
-export const getAllTaskTags =
-  createAsyncThunk('taskTags/getAllTaskTags', async (dispatch, thunkAPI) => {
-    const response = await axios.get(PROXY + '/api/v1/task_tags/get/all')
-    return response.data
-  });
-
-export const saveTaskTags =
-  createAsyncThunk('taskTags/saveTaskTag', async (dispatch, thunkAPI) => {
-    const taskTagsToAdd = thunkAPI.getState().task_tags.add;
-    const postResponse = await axios.post(PROXY + '/api/v1/task_tags/save', taskTagsToAdd);
-    if(postResponse.status === 200) {
-      const getResponse = await axios.get(PROXY + '/api/v1/task_tags/get/all')
-      return getResponse.data
-    }
-
-    return [];
-  });
-
-export const deleteTaskTags =
-  createAsyncThunk('taskTags/deleteTaskTag', async (dispatch, thunkAPI) => {
-    const taskTagsToRemove = thunkAPI.getState().task_tags.remove
-    const deleteResponse = await axios.delete(PROXY + '/api/v1/task_tags/delete', {
-      params: {
-        remove: taskTagsToRemove
-      }
-    })
-
-    if(deleteResponse.status === 200) {
-      const getResponse = await axios.get(PROXY + '/api/v1/task_tags/get/all')
-      return getResponse.data;
-    }
-
-    return []
-  }); 
+import { createSlice } from '@reduxjs/toolkit';
 
 export const taskTagsSlice = createSlice({
   name: 'tags',
@@ -50,31 +11,87 @@ export const taskTagsSlice = createSlice({
   
   reducers: {
     addTaskTag: (state, action) => {
-      state.add = [...state.add, {
+      let taskTagToAdd = {
         tag_id: action.payload.tag_id,
         task_id: action.payload.task_id
-      }];
+      }
+      
+      state.task_tags = [...state.task_tags, taskTagToAdd];
     },
 
     removeTaskTag: (state, action) => {
-      state.remove = [...state.remove, action.payload.task_tag_id];
+      let payload = action.payload.task_tag_object;
+      state.task_tags = state.task_tags.filter((task_tag) => {
+        if(task_tag.task_id === payload.task_id && task_tag.tag_id === payload.tag_id) {
+          console.log("Removing Match")
+
+          return false;
+        } 
+
+        return true;
+      })
     },
 
     clearTaskTags: (state, action) => {
       state.task_tags = []
-    }
-  },
-  extraReducers: {
-    [getAllTaskTags.fulfilled]: (state, action) => {
-      state.task_tags = action.payload;
     },
-    [saveTaskTags.fulfilled]: (state, action) => {
-      state.task_tags = action.payload;
-      state.add = []
-    },
-    [deleteTaskTags.fulfilled]: (state, action) => {
+
+    deleteTaskTags: (state, action) => {
       state.task_tags = action.payload;
       state.remove = []
+    },
+
+    clearTaskTagsForTagIDs: (state, action) => {
+      let selectedTags = action.payload.selected_tags;
+      state.task_tags = state.task_tags.filter((task_tag) => {
+        if(selectedTags.includes(task_tag.tag_id)) {
+          return false;
+        }
+
+        return true;
+      });
+    },
+
+    clearTaskTagsForTaskIDs: (state, action) => {
+      let selectedTasks = action.payload.selected_tasks;
+      let activeID = action.payload.activeID;
+
+      state.task_tags = state.task_tags.filter((task_tag) => {
+        if(selectedTasks.includes(task_tag.task_id)) {
+          return false;
+        }
+
+        if(task_tag.task_id === activeID) {
+          return false;
+        }
+
+        return true;
+      });
+    },
+
+    addDemoTaskTags: (state, action) => {
+      state.task_tags = [
+        {
+          task_id: 1,
+          tag_id: 1
+        },
+        {
+          task_id: 2,
+          tag_id: 2
+        },
+        {
+          task_id: 3,
+          tag_id: 2
+        },
+        {
+          task_id: 4,
+          tag_id: 2
+        },
+        {
+          task_id: 5,
+          tag_id: 2
+        },
+      ]
     }
   }
 })
@@ -82,7 +99,11 @@ export const taskTagsSlice = createSlice({
 export const { 
   addTaskTag,
   removeTaskTag,
-  clearTaskTags
+  clearTaskTags,
+  clearTaskTagsForTagIDs,
+  clearTaskTagsForTaskIDs,
+  deleteTaskTags,
+  addDemoTaskTags
 } = taskTagsSlice.actions;
 
 export default taskTagsSlice.reducer;

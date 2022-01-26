@@ -6,15 +6,13 @@ import {
   setTaskDate,
   addSelected,
   addUnsaved,
-  saveTasks
+  clearSelected
 } from '../../features/tasks';
 
 import {
   addTaskTag,
   removeTaskTag,
-  clearTaskTags,
-  saveTaskTags,
-  deleteTaskTags
+  clearTaskTagsForTaskIDs
 } from '../../features/task_tags';
 
 
@@ -60,7 +58,7 @@ const TaskOperations = (props) => {
   }, [addTagRef, removeTagRef, addTagMenuVisible, removeTagMenuVisible])
 
   const tasks = useSelector((state) => state.tasks.tasks);
-  const selected = useSelector(state => state.tasks.selected);
+  const selected = useSelector((state) => state.tasks.selected);
   const tags = useSelector((state) => state.tags.tags);
   const task_tags = useSelector((state) => state.task_tags.task_tags)
 
@@ -88,9 +86,23 @@ const TaskOperations = (props) => {
 
   /** Handles adding tags to a task object. */
   const handleAddTag = (element) => {
-    dispatch(addTaskTag({ tag_id: element.tag_id, task_id: props.id }));
-    dispatch(clearTaskTags());
-    dispatch(saveTaskTags());
+    if(selected.length > 0) {
+
+      if(!selected.includes(props.id)) {
+        if(!task_tags.some(task_tag => task_tag.tag_id === element.tag_id && task_tag.task_id === props.id)) {
+          dispatch(addTaskTag({ tag_id: element.tag_id, task_id: props.id }));
+        }
+      }
+
+      selected.forEach((item) => {   
+        if(!task_tags.some(task_tag => task_tag.tag_id === element.tag_id && task_tag.task_id === item)) {
+          dispatch(addTaskTag({ tag_id: element.tag_id, task_id: item }));
+        }
+      });
+    } else {
+      console.log(props);
+      dispatch(addTaskTag({ tag_id: element.tag_id, task_id: props.id}));
+    }
 
     //Hide the menu after clicking the tag.
     setRemoveTagMenuVisible(false);
@@ -162,14 +174,25 @@ const TaskOperations = (props) => {
 
   /** Handles removing a tag from a task. */
   const handleRemoveTag = (element) => {
-    const taskTagToRemove = task_tags.find(taskTagObjects => taskTagObjects.tag_id === element.tag_id && taskTagObjects.task_id === props.id);
-    dispatch(removeTaskTag({ task_tag_id: taskTagToRemove.task_tag_id }));
-    dispatch(clearTaskTags());
-    dispatch(deleteTaskTags());
+
+    if(selected.length > 0) {
+      
+      if(!selected.includes(props.id)) {
+        dispatch(removeTaskTag({ task_tag_object: { tag_id: element.tag_id, task_id: props.id }}))
+      }
+
+      selected.forEach((item) => {
+        dispatch(removeTaskTag({ task_tag_object: { tag_id: element.tag_id, task_id: item }}))
+      })
+
+    } else {
+      dispatch(removeTaskTag({ task_tag_object: { tag_id: element.tag_id, task_id: props.id } })); 
+    }
 
     //Hide the menu after clicking the tag.
     setRemoveTagMenuVisible(false);
     setAddTagMenuVisible(false);
+
   }
 
   /**
@@ -247,7 +270,6 @@ const TaskOperations = (props) => {
               newDate: null
             }));
             dispatch(addUnsaved({ id: task.task_id }));
-            dispatch(saveTasks());
       
           } else {
             dispatch(setTaskDate({ 
@@ -255,7 +277,6 @@ const TaskOperations = (props) => {
               newDate: new Date().toISOString()
             }));
             dispatch(addUnsaved({ id: task.task_id }));
-            dispatch(saveTasks());
           }
         }
       })
@@ -270,7 +291,6 @@ const TaskOperations = (props) => {
           newDate: null
         }));
         dispatch(addUnsaved({ id: props.id }));
-        dispatch(saveTasks());
   
       } else {
         dispatch(setTaskDate({ 
@@ -278,7 +298,6 @@ const TaskOperations = (props) => {
           newDate: new Date().toISOString()
         }));
         dispatch(addUnsaved({ id: props.id }));
-        dispatch(saveTasks());
       }
     }
   }
@@ -293,11 +312,17 @@ const TaskOperations = (props) => {
         dispatch(addSelected({ id: props.id }))
       }
 
-      dispatch(deleteSelectedTasks())
+      dispatch(clearTaskTagsForTaskIDs({selected_tasks: selected, activeID: props.id}))
+      dispatch(deleteSelectedTasks());
+      dispatch(clearSelected());
 
     } else {
+  
       dispatch(addSelected({ id: props.id }));
+      dispatch(clearTaskTagsForTaskIDs({selected_tasks: selected, activeID: props.id}))
       dispatch(deleteSelectedTasks());
+      dispatch(clearSelected());
+
     }
   }
 

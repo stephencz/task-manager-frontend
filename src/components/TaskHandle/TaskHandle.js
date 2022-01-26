@@ -26,7 +26,7 @@ const TaskHandle = (props) => {
     // logic for proper single selection, multi selection,
     // removal from selection, and selection clearing.
     if(!selected.includes(props.id)) {
-      if(event.shiftKey) {
+      if(event.shiftKey || event.ctrlKey) {
         dispatch(addSelected({ id: props.id }));
 
       } else {

@@ -1,53 +1,4 @@
-import env from "react-dotenv";
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-const PROXY = env.PROXY;
-
-/** Creates a new empty task and adds it to the database. */
-export const createNewEmptyTask = 
-  createAsyncThunk('tasks/createNewEmptyTask', async (dispatch, thunkAPI) => {    
-    await axios.post(PROXY + '/api/v1/tasks/new');
-    const response = await axios.get(PROXY + '/api/v1/tasks/get/latest')
-    return response.data[0];
-  });
-
-/** Returns a JSON Array of all Tasks. */
-export const getAllTasks = 
-  createAsyncThunk('tasks/getAllTasks', async (dispatch, thunkAPI) => {
-    const response = await axios.get(PROXY + '/api/v1/tasks/get/all');
-    return response.data;
-  });
-
-/** Saves tasks with IDs in the unsaved array. */
-export const saveTasks = 
-  createAsyncThunk('tasks/saveTasks', async (dispatch, thunkAPI) => {
-
-    const tasks = thunkAPI.getState().tasks.tasks;
-    const unsaved_ids = thunkAPI.getState().tasks.unsaved;
-    const unsaved_tasks = tasks.filter((element) => { 
-      return unsaved_ids.includes(element.task_id) 
-    });
-
-    const response = await axios.post(PROXY + '/api/v1/tasks/save', unsaved_tasks);
-    return response;
-  });
-
-/** Deletes all tasks that are currently selected */
-export const deleteSelectedTasks =
-  createAsyncThunk('tasks/deleteSelectedTasks', async (dispatch, thunkAPI) => {
-    const state = thunkAPI.getState();
-    if(state.tasks.selected.length > 0) {
-      const response = await axios.delete(PROXY + '/api/v1/tasks/delete/selected', {
-        params: {
-          selected: state.tasks.selected
-        }
-      });
-
-      console.log(response);
-      return response;
-    }
-  });
+import { createSlice } from '@reduxjs/toolkit';
 
 /**
  * Sorts tasks by their date from oldest to newest.
@@ -58,9 +9,6 @@ const sortByDate = (tasks) => {
   tasks.sort((a, b) => {
     let dateA = new Date(a.task_date);
     let dateB = new Date(b.task_date);
-
-    console.log(dateA);
-    console.log(dateB);
 
     if(dateA < dateB) return -1;
     if(dateA > dateB) return 1;
@@ -138,7 +86,7 @@ const sortAlphabeticallyByTag = (tasks, task_tags, tags) => {
 }
 
 /**
- * 
+ * Sorts the tasks alphabetically by their description.
  * @param {*} tasks 
  * @param {*} task_tags 
  * @param {*} tags 
@@ -157,6 +105,25 @@ const sortAlphabeticallyByDescription = (tasks) => {
   });
 }
 
+/**
+ * FOR THE FRONTEND DEMO ONLY: Generates the next task id.
+ * @param {*} tasks The array of tasks.
+ * @returns integer
+ */
+const getNextTaskID = (tasks) => {
+  if(tasks.length <= 0) {
+    return 1;
+  } else {
+    let max = 0;
+    tasks.forEach(task => {
+      if(task.task_id > max) {
+        max = task.task_id
+      }
+    })
+
+    return max + 1;
+  }
+}
 
 export const tasksSlice = createSlice({
   name: 'tasks',
@@ -172,6 +139,28 @@ export const tasksSlice = createSlice({
   
   reducers: {
 
+    createNewEmptyTask(state, action) {
+      state.tasks = [...state.tasks, {
+        task_id: getNextTaskID(state.tasks),
+        task_date: null,
+        task_description: "Describe your task here...",
+      }]
+
+      //Clear selected tasks.
+      state.selected = [];
+    },
+
+    deleteSelectedTasks(state, action) {
+      if(state.selected.length > 0) {
+        state.tasks = state.tasks.filter((task) => {
+          if(state.selected.includes(task.task_id)) {
+            return false;
+          }
+
+          return true;
+        })
+      }
+    },
 
     /**
      * Sets the description of a Task with the matching id. 
@@ -380,7 +369,6 @@ export const tasksSlice = createSlice({
       let task_tags = action.payload.task_tags;
       let tags = action.payload.task_tags;
 
-      console.log(mode);
       if(mode == -1) {
         state.tasks = state.tasks.map((x) => {
           return { ...x, hidden: false };
@@ -401,52 +389,44 @@ export const tasksSlice = createSlice({
         })
         
       }
+    },
+
+    addDemoTasks(state, action) {
+      state.tasks = [
+        {
+          task_id: 1,
+          task_description: "Welcome to Task Manager! A full stack web application built by Stephen Czekalski. This is a frontend only live demo. ",
+          task_date: null
+        },
+        {
+          task_id: 2,
+          task_description: "Click new task to create a new empty task, or a new tag by clicking add tag in the tag manager.",
+          task_date: null
+        },
+        {
+          task_id: 3,
+          task_description: "Add a date to a task by clicking the clock icon to the right, or a tag by clicking the plus.",
+          task_date: null
+        },
+        {
+          task_id: 4,
+          task_description: "Delete a task by clicking the trash can icon, and delete tags by selecting a tag and clicking remove tag.",
+          task_date: null
+        },
+        {
+          task_id: 5,
+          task_description: "Select task or tag items by clicking the nine dots to the left. Holding shift or control will let you select multiple items.",
+          task_date: null
+        }
+      ]
     }
-  },
-
-  extraReducers: {
-
-    /** When tasks are loading, the stauts changes to reflect that they are loading. */
-    [getAllTasks.pending]: (state, action) => {
-      state.status = "Loading Tasks!";
-    },
-
-    /** 
-     * Sets the tasks to the payload recieved from the backend, and null
-     * the status because it won't be displayed anymore.
-     */
-    [getAllTasks.fulfilled]: (state, action) => {
-      state.tasks = action.payload;
-      state.status = null;
-    },
-
-    /** If tasks fail to load, the status changes to reflect the failure. */
-    [getAllTasks.rejected]: (state, action) => {
-      state.status = "Failed to load tasks."
-    },
-
-    /** Creates a new empty task and adds it to the task list. */
-    [createNewEmptyTask.fulfilled]: (state, action) => {
-      state.tasks = [action.payload, ...state.tasks];
-    },
-
-    /** Saves all tasks in the unsaved array. */
-    [saveTasks.fulfilled]: (state, action) => {
-      state.unsaved = [];
-    },
-
-    /**
-     * If tasks are successfully removed from database, then they are removed
-     * from our local copy of the task's.
-     */
-    [deleteSelectedTasks.fulfilled]: (state, action) => {
-      state.tasks = state.tasks.filter( value => state.selected.includes(value["task_id"]) !== true)
-      state.selected = []
-    },
   }
 });
 
 export const { 
+
+  createNewEmptyTask,
+  deleteSelectedTasks,
 
   setTaskDescription,
   setTaskDate,
@@ -469,7 +449,9 @@ export const {
   sortTasksByTag,
 
   filterForSearch,
-  filterForShowMode
+  filterForShowMode,
+
+  addDemoTasks
 
 } = tasksSlice.actions;
 

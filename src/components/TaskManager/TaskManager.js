@@ -1,4 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+
+import {
+  addDemoTasks
+} from '../../features/tasks';
+
+import {
+  addDemoTags
+} from '../../features/tags';
+
+
+import {
+  addDemoTaskTags
+} from '../../features/task_tags';
 
 import TaskList from '../TaskList/TaskList';
 import TaskSearchSort from '../TaskSearchSort/TaskSearchSort';
@@ -11,6 +25,14 @@ import './TaskManager.css';
  */
 const TaskManager = (props) => {
   
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(addDemoTags())
+    dispatch(addDemoTasks())
+    dispatch(addDemoTaskTags())
+  }, [dispatch]);
+
   return (
     <div className="task-manager-wrapper">
       <div className="row">
