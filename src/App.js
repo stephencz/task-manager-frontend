@@ -8,19 +8,18 @@ import './App.css';
 
 class App extends React.Component {
 
-  // constructor(props) {
-  //   super(props)
-  // }
-
   render() {
     return (
-      <div className="container">
-        <div className="app-wrapper">
-          <Header />
-          <TaskManager />
-          <TagManager />
+      <main>
+        <div className="container-fluid">
+          <div className="app-wrapper">
+            <Header />
+            <TaskManager />
+            <TagManager />
+          </div>
         </div>
-      </div>
+      </main>
+      
     );
   }
 

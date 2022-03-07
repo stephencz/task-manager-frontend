@@ -1,5 +1,7 @@
 .task-search-sort
 {
+  border-bottom: 1px solid #c3c3c3;
+
   display: flex;
   flex-flow: row nowrap;
 
@@ -7,7 +9,7 @@
   align-content: flex-start;
   align-items: flex-start;
 
-  margin-bottom: 20px;
+  padding-bottom: 1rem;
 }
 
 .task-search-sort input.search
@@ -36,4 +38,33 @@
   border-radius: 5px; 
   border: 1px solid #cacaca;
   margin-left: auto;
+}
+
+@media (max-width: 575.98px) {
+
+
+  .task-search-sort
+  {
+    flex-direction: column;
+  }
+
+  .task-search-sort input.search
+  {
+    padding: 0px;
+  }
+
+  .task-search-sort input.search,
+  .task-search-sort select.all-sort,
+  .task-search-sort select.show-only,
+  .task-search-sort button.new-task-button
+  {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+
+  .task-search-sort button.new-task-button
+  {
+    margin-left: 0px;
+  }
 }

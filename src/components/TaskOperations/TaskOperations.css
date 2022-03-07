@@ -55,6 +55,11 @@
   height: 20px; 
 }
 
+.floating-menu-wrapper
+{
+  position: relative;
+}
+
 .floating-menu
 {
   padding-top: 0px;
@@ -83,4 +88,17 @@
   margin-bottom: 5px;
 
   font-size: 0.75rem;
+}
+
+@media (max-width: 575.98px) {
+
+  .task-operations .toggle-calendar-button,
+  .task-operations .add-task-tags-button,
+  .task-operations .remove-task-tags-button,
+  .task-operations .remove-task-button
+  {
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
 }

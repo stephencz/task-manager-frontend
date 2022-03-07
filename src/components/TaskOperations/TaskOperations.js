@@ -145,16 +145,21 @@ const TaskOperations = (props) => {
         })
 
         return (
-          <div ref={addTagRef} className="floating-menu">
+          <div className="floating-menu-wrapper">
+            <div ref={addTagRef} className="floating-menu">
             { buttons }
+            </div>
           </div>
+          
         );
         
       } else {
 
         return (
-          <div ref={addTagRef} className="floating-menu">
-            No tags to add
+          <div className="floating-menu-wrapper">
+            <div ref={addTagRef} className="floating-menu">
+              No tags to add
+            </div>
           </div>
         );
 
@@ -234,17 +239,22 @@ const TaskOperations = (props) => {
       })
 
       return (
-        <div ref={removeTagRef} className="floating-menu">
-          { buttons }
+        <div className="floating-menu-wrapper">
+          <div ref={removeTagRef} className="floating-menu">
+            { buttons }
+          </div>
         </div>
       );
      }
      else {
 
       return (
-        <div ref={removeTagRef} className="floating-menu">
-          No tags to remove
+        <div className="floating-menu-wrapper">
+          <div ref={removeTagRef} className="floating-menu">
+            No tags to remove
+          </div>
         </div>
+        
       );
      }
     }
